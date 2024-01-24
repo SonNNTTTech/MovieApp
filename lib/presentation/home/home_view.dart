@@ -29,7 +29,6 @@ class _HomeViewState extends ConsumerState<HomeView> {
   @override
   Widget build(BuildContext context) {
     MovieType typePicking = ref.watch(homeMovieTypeProvider);
-    var data = ref.watch(homeMapMovieProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text(typePicking.text),
@@ -48,7 +47,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                 children: List.generate(MovieType.values.length, (index) {
                   MovieType type = MovieType.values[index];
                   return MoviePage(
-                      items: data[type]!,
+                      items: ref.watch(homeMapMovieProvider)[type]!,
                       errorText: ref.watch(homeMapErrorProvider)[type],
                       onReload: () async {
                         await Get.find<HomeRepository>().reloadMovie(type);
