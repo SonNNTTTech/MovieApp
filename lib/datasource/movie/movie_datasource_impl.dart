@@ -10,8 +10,12 @@ class MovieDataSourceImpl implements MovieDataSource {
   @override
   Future<Either<String, MovieResponse>> callMovieByType(MovieType type,
       {int? page}) async {
+    var queryParameters = <String, dynamic>{};
+    if (page != null) {
+      queryParameters['page'] = page.toString();
+    }
     var response = await DioSingleton.instance
-        .get('$headUrl/${type.apiText}${page != null ? '?page=$page' : ''}');
+        .get('$headUrl/${type.apiText}', queryParameters: queryParameters);
     if (AppHelper.isSuccessApi(response.statusCode!)) {
       return Right(MovieResponse.fromJson(response.data));
     }
