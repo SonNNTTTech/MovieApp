@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/common/app_helper.dart';
 import 'package:test_app/widget/my_loading.dart';
 
 class PaginationWrapper extends StatefulWidget {
@@ -10,13 +11,13 @@ class PaginationWrapper extends StatefulWidget {
   final String? errorText;
 
   const PaginationWrapper({
-    Key? key,
+    super.key,
     required this.child,
     required this.onReload,
     required this.onNewPage,
     this.isNoMorePage = false,
     this.errorText,
-  }) : super(key: key);
+  });
 
   @override
   State<PaginationWrapper> createState() => _PaginationWrapperState();
@@ -48,6 +49,12 @@ class _PaginationWrapperState extends State<PaginationWrapper> {
   }
 
   @override
+  void didUpdateWidget(covariant PaginationWrapper oldWidget) {
+    AppHelper.myLog('message');
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
         onRefresh: widget.onReload,
@@ -55,6 +62,7 @@ class _PaginationWrapperState extends State<PaginationWrapper> {
           controller: scrollController,
           child: ListView(
             controller: scrollController,
+            shrinkWrap: true,
             children: [
               widget.child,
               widget.errorText == null

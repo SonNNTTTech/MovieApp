@@ -22,41 +22,50 @@ class _HomeViewState extends ConsumerState<HomeView> {
   void initState() {
     Get.put(HomeRepository(
         movieDataSource: Get.find<MovieDataSourceImpl>(), ref: ref));
-    Get.find<HomeRepository>().getNewPage(MovieType.popular);
+    Future.delayed(Duration.zero, () {
+      Get.find<HomeRepository>().reloadPage(MovieType.popular);
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    MovieType typePicking = ref.watch(homeMovieTypeProvider);
+    MovieType tab = ref.watch(homeTab);
+    var stateMap = ref.watch(homeStateMap);
     return Scaffold(
       appBar: AppBar(
-        title: Text(typePicking.text),
+        title: const Text('Top Movie'),
       ),
       body: Column(
         children: [
-          DropdownPicker<MovieType>(
-            items: MovieType.values,
-            textBuilder: (value) => value.text,
-            onPick: (value) =>
-                ref.read(homeMovieTypeProvider.notifier).state = value,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              DropdownPicker<MovieType>(
+                items: MovieType.values,
+                textBuilder: (value) => value.text,
+                initialIndex: MovieType.values.indexOf(tab),
+                onPick: Get.find<HomeRepository>().changeTab,
+              ),
+              const SizedBox(
+                width: 12,
+              )
+            ],
           ),
           Expanded(
             child: FadeIndexedStack(
-                index: MovieType.values.indexOf(typePicking),
+                index: MovieType.values.indexOf(tab),
                 children: List.generate(MovieType.values.length, (index) {
                   MovieType type = MovieType.values[index];
                   return MoviePage(
-                      items: ref.watch(homeMapMovieProvider)[type]!,
-                      errorText: ref.watch(homeMapErrorProvider)[type],
-                      onReload: () async {
-                        await Get.find<HomeRepository>().reloadMovie(type);
-                      },
-                      onNewPage: () async {
-                        await Get.find<HomeRepository>().getNewPage(type);
-                      },
-                      isNoMorePage:
-                          ref.watch(homeMapIsNoMorePageProvider)[type]!);
+                    pageState: stateMap[type]!,
+                    onReload: () async {
+                      await Get.find<HomeRepository>().reloadPage(type);
+                    },
+                    onNewPage: () async {
+                      await Get.find<HomeRepository>().getNewPage(type);
+                    },
+                  );
                 })),
           )
         ],

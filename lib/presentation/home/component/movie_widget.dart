@@ -1,23 +1,23 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import 'package:test_app/presentation/home/entity/movie_entity.dart';
 import 'package:test_app/widget/my_network_image.dart';
+import 'package:test_app/widget/rating_widget.dart';
 
 class MovieWidget extends StatelessWidget {
   final MovieEntity entity;
   const MovieWidget({
-    Key? key,
+    super.key,
     required this.entity,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
+          color: Colors.white,
           boxShadow: const [BoxShadow(color: Colors.black38, blurRadius: 3)]),
       child: Stack(
         children: [
@@ -25,57 +25,42 @@ class MovieWidget extends StatelessWidget {
             children: [
               Expanded(
                 flex: 5,
-                child: MyNetworkImage(
-                  url: entity.imageUrl,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      topRight: Radius.circular(8)),
+                  child: MyNetworkImage(
+                    url: entity.imageUrl,
+                  ),
                 ),
               ),
               Expanded(
-                  child: Center(
+                flex: 2,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(entity.name,
-                        style: const TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold)),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Text(entity.name,
+                          textAlign: TextAlign.center,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold)),
+                    ),
                     Text(DateFormat('MMM dd, yyyy').format(entity.date),
                         style: const TextStyle(fontSize: 14)),
                   ],
                 ),
-              ))
+              ),
             ],
           ),
-          Positioned.fill(child: LayoutBuilder(
-            builder: (context, constraints) {
-              return Padding(
-                padding: EdgeInsets.only(
-                    bottom: constraints.biggest.height * 2 / 7 - 16),
-                child: CircularPercentIndicator(
-                  radius: 32,
-                  lineWidth: 4,
-                  percent: entity.rate / 100,
-                  center: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(entity.rate.toString(),
-                          style: const TextStyle(fontSize: 18)),
-                      const Text(
-                        '%',
-                        style: TextStyle(fontSize: 8),
-                      )
-                    ],
-                  ),
-                  progressColor: getRateColor(entity.rate),
-                ),
-              );
-            },
+          Positioned(
+              child: RatingWidget(
+            rate: entity.rate,
           ))
         ],
       ),
     );
-  }
-
-  Color getRateColor(int rate) {
-    if (rate >= 70) return Colors.green;
-    if (rate >= 30) return Colors.yellowAccent;
-    return Colors.redAccent;
   }
 }
