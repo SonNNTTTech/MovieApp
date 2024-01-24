@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 
-class ErrorWidget extends StatelessWidget {
+class MyErrorWidget extends StatelessWidget {
   final String text;
   final Function()? onRetry;
-  const ErrorWidget({
-    Key? key,
+  const MyErrorWidget({
+    super.key,
     required this.text,
     this.onRetry,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
           text,

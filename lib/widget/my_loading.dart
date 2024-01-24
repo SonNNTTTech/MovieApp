@@ -6,9 +6,18 @@ class MyLoading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LoadingAnimationWidget.stretchedDots(
-      color: Colors.orangeAccent,
-      size: 24,
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          LoadingAnimationWidget.stretchedDots(
+            color: Colors.orangeAccent,
+            size: 24,
+          ),
+          const Text('Loading...')
+        ],
+      ),
     );
   }
 }

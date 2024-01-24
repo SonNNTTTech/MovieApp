@@ -10,12 +10,12 @@ class DropdownPicker<T> extends StatefulWidget {
 
   ///create a dropdown of a list T, can be pick
   const DropdownPicker({
-    Key? key,
+    super.key,
     required this.items,
     this.onPick,
     this.initialIndex,
     this.textBuilder,
-  }) : super(key: key);
+  });
 
   @override
   State<DropdownPicker<T>> createState() => _DropdownPickerState<T>();

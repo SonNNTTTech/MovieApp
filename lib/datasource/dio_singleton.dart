@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
 
+import 'logger.dart';
+
 class DioSingleton {
   DioSingleton._();
 
@@ -17,6 +19,6 @@ class DioSingleton {
           'accept': 'application/json',
         },
       ),
-    );
+    )..interceptors.add(DioLogIntercepter());
   }
 }
