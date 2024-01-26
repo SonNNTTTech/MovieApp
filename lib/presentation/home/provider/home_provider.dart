@@ -63,7 +63,7 @@ class HomeNotifier extends _$HomeNotifier {
         .map((e) => MovieEntity(
             name: e.title ?? '',
             date: e.releaseDate != null
-                ? DateTime.parse(e.releaseDate!)
+                ? DateTime.tryParse(e.releaseDate!)
                 : DateTime.now(),
             imageUrl:
                 'https://image.tmdb.org/t/p/w220_and_h330_face${e.posterPath ?? ''}',

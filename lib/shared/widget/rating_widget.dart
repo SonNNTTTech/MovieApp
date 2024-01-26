@@ -13,10 +13,14 @@ class RatingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(4),
+      decoration:
+          const BoxDecoration(color: Colors.black, shape: BoxShape.circle),
       child: CircularPercentIndicator(
         radius: 16,
         lineWidth: 3,
-        backgroundColor: Colors.black,
+        addAutomaticKeepAlive: false,
+        animation: false,
+        backgroundColor: Colors.white30,
         percent: rate / 100,
         center: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,12 +34,12 @@ class RatingWidget extends StatelessWidget {
             )
           ],
         ),
-        progressColor: getRateColor(rate),
+        progressColor: _getRateColor(rate),
       ),
     );
   }
 
-  Color getRateColor(int rate) {
+  Color _getRateColor(int rate) {
     if (rate >= 70) return Colors.green;
     if (rate >= 30) return Colors.yellowAccent;
     return Colors.redAccent;

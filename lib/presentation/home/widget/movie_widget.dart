@@ -49,7 +49,10 @@ class MovieWidget extends StatelessWidget {
                           style: const TextStyle(
                               fontSize: 15, fontWeight: FontWeight.bold)),
                     ),
-                    Text(DateFormat('MMM dd, yyyy').format(entity.date),
+                    Text(
+                        entity.date != null
+                            ? DateFormat('MMM dd, yyyy').format(entity.date!)
+                            : '',
                         style: const TextStyle(fontSize: 14)),
                   ],
                 ),
@@ -57,11 +60,12 @@ class MovieWidget extends StatelessWidget {
             ],
           ),
 
-          //Positioned make gridview can not kill invisible item, what to replace Positioned??
           Positioned(
-              child: RatingWidget(
-            rate: entity.rate,
-          ))
+            bottom: 49,
+            child: RatingWidget(
+              rate: entity.rate,
+            ),
+          )
         ],
       ),
     );
