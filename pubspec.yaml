@@ -15,7 +15,7 @@ dependencies:
   dio: ^5.4.0
   cached_network_image: ^3.3.1
   loading_animation_widget: ^1.2.0+4
-  intl: ^0.19.0
+  intl: ^0.18.1
   percent_indicator: ^4.2.3
   lazy_load_indexed_stack: ^1.1.0
   persistent_bottom_nav_bar: ^5.0.2
@@ -25,6 +25,8 @@ dependencies:
   connectivity_plus: ^5.0.2
   json_annotation: ^4.8.1
   either_dart: ^1.0.0
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:
@@ -37,3 +39,6 @@ dev_dependencies:
   json_serializable: ^6.7.1
 flutter:
   uses-material-design: true
+  generate: true
+flutter_intl:
+  enabled: true

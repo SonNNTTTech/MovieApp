@@ -1,16 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'package:test_app/generated/l10n.dart';
 import '../../bottom_bar/widget/bottom_bar_widget.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
+import '../provider/app_provider.dart';
 
 class MyAppView extends ConsumerWidget {
   const MyAppView({super.key});
 
   @override
   Widget build(BuildContext context, ref) {
-    return const MaterialApp(
+    final locale =
+        ref.watch(appNotifierProvider.select((value) => value.locale));
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: BottomBarWidget(),
+      localizationsDelegates: const [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
+      locale: locale,
+      home: const BottomBarWidget(),
     );
   }
 }
