@@ -11,24 +11,27 @@ class RatingWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CircularPercentIndicator(
-      radius: 20,
-      lineWidth: 3,
-      backgroundColor: Colors.black,
-      percent: rate / 100,
-      center: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(rate.toString(),
-              style: const TextStyle(fontSize: 16, color: Colors.white)),
-          const Text(
-            '%',
-            style: TextStyle(fontSize: 8, color: Colors.white),
-          )
-        ],
+    return Container(
+      padding: const EdgeInsets.all(4),
+      child: CircularPercentIndicator(
+        radius: 16,
+        lineWidth: 3,
+        backgroundColor: Colors.black,
+        percent: rate / 100,
+        center: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(rate.toString(),
+                style: const TextStyle(fontSize: 10, color: Colors.white)),
+            const Text(
+              '%',
+              style: TextStyle(fontSize: 6, color: Colors.white),
+            )
+          ],
+        ),
+        progressColor: getRateColor(rate),
       ),
-      progressColor: getRateColor(rate),
     );
   }
 
