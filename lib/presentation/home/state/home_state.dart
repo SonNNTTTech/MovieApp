@@ -5,7 +5,7 @@ import '../entity/home_entity.dart';
 
 part 'home_state.freezed.dart';
 
-@freezed
+@Freezed(makeCollectionsUnmodifiable: false)
 class HomeState with _$HomeState {
   const factory HomeState({
     required Map<MovieType, HomeEntity> mapState,

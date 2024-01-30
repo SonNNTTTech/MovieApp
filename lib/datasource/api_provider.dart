@@ -8,9 +8,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:test_app/shared/constants/app_string.dart';
 
 import 'api_response.dart';
+import 'curl_logger.dart';
 import 'interceptor/dio_connectivity_request_retrier.dart';
 import 'interceptor/retry_interceptor.dart';
-import 'logger.dart';
 
 //part 'api_provider.g.dart';
 
@@ -48,7 +48,7 @@ class ApiProvider {
     );
 
     if (kDebugMode) {
-      _dio.interceptors.add(DioLogIntercepter());
+      _dio.interceptors.add(CurlLoggerDioInterceptor());
     }
   }
 
@@ -83,7 +83,7 @@ class ApiProvider {
       if (response.statusCode! < 300) {
         return APIResponse.success(response.data);
       } else {
-        return APIResponse.error(response.data['message'] as String);
+        return APIResponse.error(response.data['status_message'] as String);
       }
     } on DioException catch (e) {
       if (e.error is SocketException) {
@@ -96,8 +96,9 @@ class ApiProvider {
       }
 
       if (e.response != null) {
-        if (e.response!.data['message'] != null) {
-          return APIResponse.error(e.response!.data['message'] as String);
+        if (e.response!.data['status_message'] != null) {
+          return APIResponse.error(
+              e.response!.data['status_message'] as String);
         }
       }
       return APIResponse.error(e.message ?? AppString.UNKNOWN_ERROR);

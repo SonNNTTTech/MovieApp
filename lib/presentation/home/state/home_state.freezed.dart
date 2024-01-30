@@ -88,7 +88,7 @@ class __$$HomeStateImplCopyWithImpl<$Res>
   }) {
     return _then(_$HomeStateImpl(
       mapState: null == mapState
-          ? _value._mapState
+          ? _value.mapState
           : mapState // ignore: cast_nullable_to_non_nullable
               as Map<MovieType, HomeEntity>,
       tab: null == tab
@@ -102,18 +102,10 @@ class __$$HomeStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$HomeStateImpl implements _HomeState {
-  const _$HomeStateImpl(
-      {required final Map<MovieType, HomeEntity> mapState, required this.tab})
-      : _mapState = mapState;
+  const _$HomeStateImpl({required this.mapState, required this.tab});
 
-  final Map<MovieType, HomeEntity> _mapState;
   @override
-  Map<MovieType, HomeEntity> get mapState {
-    if (_mapState is EqualUnmodifiableMapView) return _mapState;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_mapState);
-  }
-
+  final Map<MovieType, HomeEntity> mapState;
   @override
   final MovieType tab;
 
@@ -127,13 +119,13 @@ class _$HomeStateImpl implements _HomeState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$HomeStateImpl &&
-            const DeepCollectionEquality().equals(other._mapState, _mapState) &&
+            const DeepCollectionEquality().equals(other.mapState, mapState) &&
             (identical(other.tab, tab) || other.tab == tab));
   }
 
   @override
   int get hashCode => Object.hash(
-      runtimeType, const DeepCollectionEquality().hash(_mapState), tab);
+      runtimeType, const DeepCollectionEquality().hash(mapState), tab);
 
   @JsonKey(ignore: true)
   @override

@@ -6,7 +6,7 @@ part of 'home_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$homeNotifierHash() => r'3e7f76ba23286718d3c2082b64e913c24e1772b3';
+String _$homeNotifierHash() => r'76b4228ea7f8294e08aa002f272afac692645ab9';
 
 /// See also [HomeNotifier].
 @ProviderFor(HomeNotifier)
@@ -16,8 +16,8 @@ final homeNotifierProvider =
   name: r'homeNotifierProvider',
   debugGetCreateSourceHash:
       const bool.fromEnvironment('dart.vm.product') ? null : _$homeNotifierHash,
-  dependencies: const <ProviderOrFamily>[],
-  allTransitiveDependencies: const <ProviderOrFamily>{},
+  dependencies: null,
+  allTransitiveDependencies: null,
 );
 
 typedef _$HomeNotifier = AutoDisposeNotifier<HomeState>;

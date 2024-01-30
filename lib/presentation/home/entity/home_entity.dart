@@ -12,9 +12,4 @@ class HomeEntity {
     this.isNoMorePage = false,
     this.isLoading = true,
   });
-
-  @override
-  String toString() {
-    return 'HomeEntity(movies: ${movies.length}, error: $error, isNoMorePage: $isNoMorePage, isLoading: $isLoading)';
-  }
 }

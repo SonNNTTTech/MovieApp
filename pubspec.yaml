@@ -27,6 +27,10 @@ dependencies:
   either_dart: ^1.0.0
   flutter_localizations:
     sdk: flutter
+  webview_flutter: ^4.4.4
+  shared_preferences: ^2.2.2
+  flutter_hooks: ^0.20.4
+  hooks_riverpod: ^2.4.9
 
 dev_dependencies:
   flutter_test:

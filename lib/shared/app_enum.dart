@@ -9,3 +9,5 @@ enum MovieType {
   final String apiText;
   const MovieType(this.text, this.apiText);
 }
+
+enum AuthMode { guest, session }
