@@ -130,12 +130,8 @@ class ApiProvider {
       if (response.statusCode! < 300) {
         return APIResponse.success(response.data);
       } else {
-        if (response.statusCode! == 404) {
-          return const APIResponse.error(AppString.NO_INTERNET);
-        } else {
           return APIResponse.error(
-              response.statusMessage ?? AppString.UNKNOWN_ERROR);
-        }
+            response.data['status_message'] ?? AppString.UNKNOWN_ERROR);
       }
     } on DioException catch (e) {
       if (e.error is SocketException) {

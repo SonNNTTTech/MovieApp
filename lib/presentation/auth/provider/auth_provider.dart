@@ -1,4 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:test_app/shared/app_enum.dart';
 
 import '../../../repository/auth/auth_repository.dart';
 import '../state/auth_state.dart';
@@ -10,10 +11,10 @@ class AuthNotifier extends _$AuthNotifier {
   late final authRepo = ref.read(authRepoProvider);
   @override
   AuthState build() {
-    return const AuthState(isLoading: false);
+    return const AuthState(isLoading: false, authMode: AuthMode.notLoggedIn);
   }
 
-  Future<String?> startAuth() async {
+  Future<String?> startAuthWithIMDB() async {
     state = state.copyWith(isLoading: true);
     final result = await authRepo.createRequestToken();
     return result.fold(
@@ -23,6 +24,24 @@ class AuthNotifier extends _$AuthNotifier {
       },
       (right) {
         state = state.copyWith(isLoading: false);
+        return right;
+      },
+    );
+  }
+
+  Future<String?> startAuthAsGuest() async {
+    state = state.copyWith(isLoading: true);
+    final result = await authRepo.createGuestSession();
+    return result.fold(
+      (left) {
+        state = state.copyWith(error: left, isLoading: false);
+        return null;
+      },
+      (right) {
+        state = state.copyWith(
+            isLoading: false,
+            userName: 'Logged in as guest',
+            authMode: AuthMode.guest);
         return right;
       },
     );
@@ -41,7 +60,10 @@ class AuthNotifier extends _$AuthNotifier {
         userResponse.fold(
           (left) => state = state.copyWith(error: left, isLoading: false),
           (right) {
-            state = state.copyWith(userName: right.username, isLoading: false);
+            state = state.copyWith(
+                userName: 'Logged in as ${right.username}',
+                isLoading: false,
+                authMode: AuthMode.user);
           },
         );
       },

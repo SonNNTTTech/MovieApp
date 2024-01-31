@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:test_app/shared/app_enum.dart';
 
 part 'auth_state.freezed.dart';
 
@@ -8,5 +9,6 @@ class AuthState with _$AuthState {
     String? error,
     String? userName,
     required bool isLoading,
+    required AuthMode authMode,
   }) = _AuthState;
 }

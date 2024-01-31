@@ -17,31 +17,26 @@ class DialogWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      color: Colors.black.withOpacity(0.2),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            padding: padding ?? const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(radius ?? 6),
-              color: backgroundColor ?? Colors.white,
-              boxShadow: [
-                BoxShadow(
-                    blurRadius: 10,
-                    offset: const Offset(1, 1),
-                    spreadRadius: 1,
-                    color: Colors.black.withOpacity(0.2))
-              ],
-            ),
-            child: child,
-          )
-        ],
-      ),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          padding: padding ?? const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(radius ?? 6),
+            color: backgroundColor ?? Colors.white,
+            boxShadow: [
+              BoxShadow(
+                  blurRadius: 10,
+                  offset: const Offset(1, 1),
+                  spreadRadius: 1,
+                  color: Colors.black.withOpacity(0.2))
+            ],
+          ),
+          child: child,
+        )
+      ],
     );
   }
 }

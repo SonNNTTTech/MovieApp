@@ -43,6 +43,19 @@ class AuthRepository {
     });
   }
 
+  Future<Either<String, String>> createGuestSession() async {
+    final spRepo = _ref.read(spRepoProvider);
+    final response = await _api.get('$headUrl/guest_session/new');
+    return await response.when(success: (json) async {
+      final sessionId =
+          CreateGuestSessionResponse.fromJson(json).guestSessionId!;
+      await spRepo.setGuestSessionId(sessionId);
+      return Right(sessionId);
+    }, error: (error) {
+      return Left(error);
+    });
+  }
+
   Future<Either<String, UserResponse>> getUser() async {
     final spRepo = _ref.read(spRepoProvider);
     final queryParameters = <String, dynamic>{};

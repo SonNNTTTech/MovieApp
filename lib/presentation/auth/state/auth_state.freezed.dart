@@ -19,6 +19,7 @@ mixin _$AuthState {
   String? get error => throw _privateConstructorUsedError;
   String? get userName => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
+  AuthMode get authMode => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $AuthStateCopyWith<AuthState> get copyWith =>
@@ -30,7 +31,8 @@ abstract class $AuthStateCopyWith<$Res> {
   factory $AuthStateCopyWith(AuthState value, $Res Function(AuthState) then) =
       _$AuthStateCopyWithImpl<$Res, AuthState>;
   @useResult
-  $Res call({String? error, String? userName, bool isLoading});
+  $Res call(
+      {String? error, String? userName, bool isLoading, AuthMode authMode});
 }
 
 /// @nodoc
@@ -49,6 +51,7 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
     Object? error = freezed,
     Object? userName = freezed,
     Object? isLoading = null,
+    Object? authMode = null,
   }) {
     return _then(_value.copyWith(
       error: freezed == error
@@ -63,6 +66,10 @@ class _$AuthStateCopyWithImpl<$Res, $Val extends AuthState>
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      authMode: null == authMode
+          ? _value.authMode
+          : authMode // ignore: cast_nullable_to_non_nullable
+              as AuthMode,
     ) as $Val);
   }
 }
@@ -75,7 +82,8 @@ abstract class _$$AuthStateImplCopyWith<$Res>
       __$$AuthStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? error, String? userName, bool isLoading});
+  $Res call(
+      {String? error, String? userName, bool isLoading, AuthMode authMode});
 }
 
 /// @nodoc
@@ -92,6 +100,7 @@ class __$$AuthStateImplCopyWithImpl<$Res>
     Object? error = freezed,
     Object? userName = freezed,
     Object? isLoading = null,
+    Object? authMode = null,
   }) {
     return _then(_$AuthStateImpl(
       error: freezed == error
@@ -106,6 +115,10 @@ class __$$AuthStateImplCopyWithImpl<$Res>
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      authMode: null == authMode
+          ? _value.authMode
+          : authMode // ignore: cast_nullable_to_non_nullable
+              as AuthMode,
     ));
   }
 }
@@ -113,7 +126,11 @@ class __$$AuthStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$AuthStateImpl implements _AuthState {
-  const _$AuthStateImpl({this.error, this.userName, required this.isLoading});
+  const _$AuthStateImpl(
+      {this.error,
+      this.userName,
+      required this.isLoading,
+      required this.authMode});
 
   @override
   final String? error;
@@ -121,10 +138,12 @@ class _$AuthStateImpl implements _AuthState {
   final String? userName;
   @override
   final bool isLoading;
+  @override
+  final AuthMode authMode;
 
   @override
   String toString() {
-    return 'AuthState(error: $error, userName: $userName, isLoading: $isLoading)';
+    return 'AuthState(error: $error, userName: $userName, isLoading: $isLoading, authMode: $authMode)';
   }
 
   @override
@@ -136,11 +155,14 @@ class _$AuthStateImpl implements _AuthState {
             (identical(other.userName, userName) ||
                 other.userName == userName) &&
             (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading));
+                other.isLoading == isLoading) &&
+            (identical(other.authMode, authMode) ||
+                other.authMode == authMode));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, error, userName, isLoading);
+  int get hashCode =>
+      Object.hash(runtimeType, error, userName, isLoading, authMode);
 
   @JsonKey(ignore: true)
   @override
@@ -153,7 +175,8 @@ abstract class _AuthState implements AuthState {
   const factory _AuthState(
       {final String? error,
       final String? userName,
-      required final bool isLoading}) = _$AuthStateImpl;
+      required final bool isLoading,
+      required final AuthMode authMode}) = _$AuthStateImpl;
 
   @override
   String? get error;
@@ -161,6 +184,8 @@ abstract class _AuthState implements AuthState {
   String? get userName;
   @override
   bool get isLoading;
+  @override
+  AuthMode get authMode;
   @override
   @JsonKey(ignore: true)
   _$$AuthStateImplCopyWith<_$AuthStateImpl> get copyWith =>

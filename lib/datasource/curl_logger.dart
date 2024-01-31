@@ -4,10 +4,9 @@ import 'package:dio/dio.dart';
 import 'package:test_app/shared/app_helper.dart';
 
 class CurlLoggerDioInterceptor extends Interceptor {
-  final bool? printOnSuccess;
   final bool convertFormData;
 
-  CurlLoggerDioInterceptor({this.printOnSuccess, this.convertFormData = true});
+  CurlLoggerDioInterceptor({this.convertFormData = true});
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
@@ -27,10 +26,7 @@ class CurlLoggerDioInterceptor extends Interceptor {
     Response response,
     ResponseInterceptorHandler handler,
   ) {
-    if (printOnSuccess != null && printOnSuccess == true) {
-      _renderCurlRepresentation(response.requestOptions);
-    }
-
+    AppHelper.myLog('Responsee: ${response.data}');
     return handler.next(response); //continue
   }
 

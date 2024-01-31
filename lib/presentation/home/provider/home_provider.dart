@@ -33,12 +33,16 @@ class HomeNotifier extends _$HomeNotifier {
 
   Future getNewPage(MovieType type) async {
     Map<MovieType, HomeEntity> data = Map.from(state.mapState);
+    data[type]?.isNewPageLoading = true;
+    state = state.copyWith(mapState: data);
+    Map<MovieType, HomeEntity> data2 = Map.from(state.mapState);
     final result = await movieRepo.callMovieByType(type,
-        page: 1 + ((data[type]?.movies.length ?? 0) / 20).floor());
+        page: 1 + ((data2[type]?.movies.length ?? 0) / 20).floor());
     result.fold((left) => null, (list) {
-      data[type]?.movies.addAll(list);
-      state = state.copyWith(mapState: data);
+      data2[type]?.movies.addAll(list);
     });
+    data2[type]?.isNewPageLoading = false;
+    state = state.copyWith(mapState: data2);
   }
 
   void changeTab(MovieType newTab) {

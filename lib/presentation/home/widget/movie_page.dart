@@ -19,9 +19,11 @@ class MoviePage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isNewPageLoading = useState(false);
     final scrollController = useScrollController();
-
+    final mapState =
+        ref.watch(homeNotifierProvider.select((value) => value.mapState));
+    final entity = mapState[type];
+    bool isNewPageLoading = entity?.isNewPageLoading ?? false;
     usePostFrameCallback(() {
       ref.read(homeNotifierProvider.notifier).reloadPage(type);
       bool isBottom() =>
@@ -29,22 +31,18 @@ class MoviePage extends HookConsumerWidget {
           (scrollController.position.maxScrollExtent * 0.9);
 
       void scrollToBottom() async {
-        if (isNewPageLoading.value) return;
-        final mapState = ref.read(homeNotifierProvider).mapState;
-        if (mapState[type]?.isNoMorePage ?? true) return;
+        if (isNewPageLoading) return;
+        if (entity?.isNoMorePage ?? true) return;
         if (isBottom()) {
-          isNewPageLoading.value = true;
+          isNewPageLoading = true;
           await ref.read(homeNotifierProvider.notifier).getNewPage(type);
-          isNewPageLoading.value = false;
+          isNewPageLoading = false;
         }
       }
 
       scrollController.addListener(scrollToBottom);
       return () => scrollController.removeListener(scrollToBottom);
     }, const []);
-    final mapState =
-        ref.watch(homeNotifierProvider.select((value) => value.mapState));
-    final entity = mapState[type];
     if (entity == null) return Container();
     if (entity.isLoading) return const Center(child: MyLoading());
     if (entity.movies.isEmpty) {
@@ -90,7 +88,7 @@ class MoviePage extends HookConsumerWidget {
           padding: const EdgeInsets.only(
             bottom: 8,
           ),
-          child: _buildBottom(entity, isNewPageLoading.value),
+          child: _buildBottom(entity, isNewPageLoading),
         ),
       ],
     );

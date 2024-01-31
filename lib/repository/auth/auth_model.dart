@@ -24,6 +24,18 @@ class CreateSessionIdResponse {
   }
 }
 
+class CreateGuestSessionResponse {
+  bool? success;
+  String? guestSessionId;
+
+  CreateGuestSessionResponse({this.success, this.guestSessionId});
+
+  CreateGuestSessionResponse.fromJson(Map<String, dynamic> json) {
+    success = json['success'];
+    guestSessionId = json['guest_session_id'];
+  }
+}
+
 class UserResponse {
   int? id;
   String? username;

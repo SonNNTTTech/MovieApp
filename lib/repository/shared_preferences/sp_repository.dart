@@ -12,6 +12,7 @@ class SpRepository {
 
   static const REQUEST_TOKEN = 'REQUEST_TOKEN';
   static const SESSION_ID = 'SESSION_ID';
+  static const GUEST_SESSION_ID = 'GUEST_SESSION_ID';
   static const ACCOUNT_ID = 'ACCOUNT_ID';
 
   Future setRequestToken(String requestToken) async {
@@ -37,6 +38,16 @@ class SpRepository {
   Future<String?> getSessionId() async {
     final sp = await SharedPreferences.getInstance();
     return sp.getString(SESSION_ID);
+  }
+
+  Future setGuestSessionId(String guestSessionId) async {
+    final sp = await SharedPreferences.getInstance();
+    await sp.setString(GUEST_SESSION_ID, guestSessionId);
+  }
+
+  Future<String?> getGuestSessionId() async {
+    final sp = await SharedPreferences.getInstance();
+    return sp.getString(GUEST_SESSION_ID);
   }
 
   Future setAccountId(int accountId) async {

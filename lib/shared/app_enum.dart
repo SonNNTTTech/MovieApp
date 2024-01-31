@@ -10,4 +10,4 @@ enum MovieType {
   const MovieType(this.text, this.apiText);
 }
 
-enum AuthMode { guest, session }
+enum AuthMode { guest, user, notLoggedIn }
