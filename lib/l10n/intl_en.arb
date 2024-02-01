@@ -1,4 +1,5 @@
 {
   "top_movie": "Top movie",
-  "auth": "Authentication"
+  "auth": "Authentication",
+  "search": "Search"
 }

@@ -17,7 +17,7 @@ class HomeNotifier extends _$HomeNotifier {
   HomeState build() {
     const initialTab = MovieType.popular;
     return HomeState(mapState: {
-      for (final key in MovieType.values) key: HomeEntity(movies: [])
+      for (final key in MovieType.values) key: const HomeEntity(movies: [])
     }, tab: initialTab);
   }
 
@@ -25,24 +25,19 @@ class HomeNotifier extends _$HomeNotifier {
     Map<MovieType, HomeEntity> data = Map.from(state.mapState);
     final result = await movieRepo.callMovieByType(type);
     result.fold((left) => null, (list) {
-      data[type]?.movies = list;
-      data[type]?.isLoading = false;
+      data[type] = data[type]!.copyWith(movies: list, isLoading: false);
       state = state.copyWith(mapState: data);
     });
   }
 
   Future getNewPage(MovieType type) async {
     Map<MovieType, HomeEntity> data = Map.from(state.mapState);
-    data[type]?.isNewPageLoading = true;
-    state = state.copyWith(mapState: data);
-    Map<MovieType, HomeEntity> data2 = Map.from(state.mapState);
     final result = await movieRepo.callMovieByType(type,
-        page: 1 + ((data2[type]?.movies.length ?? 0) / 20).floor());
+        page: 1 + ((data[type]?.movies.length ?? 0) / 20).floor());
     result.fold((left) => null, (list) {
-      data2[type]?.movies.addAll(list);
+      data[type]?.movies.addAll(list);
     });
-    data2[type]?.isNewPageLoading = false;
-    state = state.copyWith(mapState: data2);
+    state = state.copyWith(mapState: data);
   }
 
   void changeTab(MovieType newTab) {

@@ -23,6 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "auth": MessageLookupByLibrary.simpleMessage("Xác thực"),
+        "search": MessageLookupByLibrary.simpleMessage("Tìm kiếm"),
         "top_movie": MessageLookupByLibrary.simpleMessage("Top phim")
       };
 }

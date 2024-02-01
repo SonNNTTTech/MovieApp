@@ -23,10 +23,27 @@ class MovieRepository {
   }) async {
     final queryParameters = <String, dynamic>{};
     if (page != null) {
-      queryParameters['page'] = page.toString();
+      queryParameters['page'] = page;
     }
     final response =
         await _api.get('$headUrl/${type.apiText}', query: queryParameters);
+    return response.when(success: (json) {
+      return Right(toListMovieEntity(MovieResponse.fromJson(json)));
+    }, error: (error) {
+      return Left(error);
+    });
+  }
+
+  Future<Either<String, List<MovieEntity>>> searchMovie(
+    String keyword, {
+    int? page,
+  }) async {
+    final queryParameters = <String, dynamic>{};
+    queryParameters['query'] = keyword;
+    if (page != null) {
+      queryParameters['page'] = page;
+    }
+    final response = await _api.get('/search/movie', query: queryParameters);
     return response.when(success: (json) {
       return Right(toListMovieEntity(MovieResponse.fromJson(json)));
     }, error: (error) {

@@ -15,12 +15,14 @@ class HomeView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tab = ref.watch(homeNotifierProvider.select((value) => value.tab));
+    final mapData =
+        ref.watch(homeNotifierProvider.select((value) => value.mapState));
     final locale =
         ref.watch(appNotifierProvider.select((value) => value.locale));
     return Scaffold(
         appBar: AppBar(
             title: Text(S.of(context).top_movie),
-          backgroundColor: Colors.blue,
+            backgroundColor: Colors.blue,
             actions: [
               Row(
                 children: [
@@ -34,8 +36,7 @@ class HomeView extends ConsumerWidget {
                   )
                 ],
               )
-            ]
-        ),
+            ]),
         body: Column(
           children: [
             Row(
@@ -49,15 +50,28 @@ class HomeView extends ConsumerWidget {
                 ),
                 const SizedBox(
                   width: 12,
-                )
+                ),
               ],
             ),
             Expanded(
               child: FadeIndexedStack(
                   index: MovieType.values.indexOf(tab),
                   children: List.generate(MovieType.values.length, (index) {
+                    final type = MovieType.values[index];
+                    final data = mapData[type];
+                    if (data == null) return Container();
                     return MoviePage(
-                      type: tab,
+                      entity: data,
+                      onReload: () async {
+                        await ref
+                            .watch(homeNotifierProvider.notifier)
+                            .reloadPage(type);
+                      },
+                      onNewPage: () async {
+                        await ref
+                            .watch(homeNotifierProvider.notifier)
+                            .getNewPage(type);
+                      },
                     );
                   })),
             )

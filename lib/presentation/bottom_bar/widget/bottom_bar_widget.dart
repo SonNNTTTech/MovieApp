@@ -5,6 +5,7 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:test_app/presentation/auth/widget/auth_view.dart';
 import 'package:test_app/presentation/bottom_bar/provider/bottom_bar_provider.dart';
 import 'package:test_app/presentation/home/widget/home_view.dart';
+import 'package:test_app/presentation/search/search_movie_view.dart';
 
 class BottomBarWidget extends ConsumerWidget {
   const BottomBarWidget({super.key});
@@ -35,7 +36,7 @@ class BottomBarWidget extends ConsumerWidget {
   }
 
   List<Widget> _buildScreens() {
-    return [const HomeView(), const AuthView()];
+    return [const HomeView(), const SeearchMovieView(), const AuthView()];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
@@ -43,6 +44,12 @@ class BottomBarWidget extends ConsumerWidget {
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.home),
         title: ("Home"),
+        activeColorPrimary: CupertinoColors.activeBlue,
+        inactiveColorPrimary: CupertinoColors.systemGrey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: const Icon(CupertinoIcons.search),
+        title: ("Search"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
       ),

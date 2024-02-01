@@ -1,17 +1,14 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:test_app/presentation/home/entity/movie_entity.dart';
 
-import 'movie_entity.dart';
+part 'home_entity.freezed.dart';
 
-class HomeEntity {
-  List<MovieEntity> movies;
-  String? error;
-  bool isNoMorePage;
-  bool isLoading;
-  bool isNewPageLoading;
-  HomeEntity({
-    required this.movies,
-    this.error,
-    this.isNoMorePage = false,
-    this.isLoading = true,
-    this.isNewPageLoading = false,
-  });
+@Freezed(makeCollectionsUnmodifiable: false)
+class HomeEntity with _$HomeEntity {
+  const factory HomeEntity({
+    required List<MovieEntity> movies,
+    String? error,
+    @Default(false) bool isNoMorePage,
+    @Default(true) bool isLoading,
+  }) = _HomeEntity;
 }
