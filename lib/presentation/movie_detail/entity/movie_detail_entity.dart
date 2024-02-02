@@ -9,6 +9,8 @@ class MovieDetailEntity {
   final List<String> kinds;
   final String duration;
   final String slogan;
+  final List<Production> productions;
+  final int revenue;
 
   MovieDetailEntity({
     required this.id,
@@ -21,5 +23,14 @@ class MovieDetailEntity {
     required this.kinds,
     required this.duration,
     required this.slogan,
+    required this.productions,
+    required this.revenue,
   });
+}
+
+class Production {
+  final String name;
+  final String imageUrl;
+
+  Production({required this.name, required this.imageUrl});
 }

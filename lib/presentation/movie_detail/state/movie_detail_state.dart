@@ -7,6 +7,7 @@ part 'movie_detail_state.freezed.dart';
 class MovieDetailState with _$MovieDetailState {
   const factory MovieDetailState({
     MovieDetailEntity? entity,
+    List<String>? images,
     String? error,
     bool? isLoading,
   }) = _MovieDetailState;

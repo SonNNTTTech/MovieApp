@@ -16,9 +16,14 @@ class MovieDetailNotifier extends _$MovieDetailNotifier {
   Future loadMovieDetail(int id) async {
     state = state.copyWith(isLoading: true);
     final movie = await movieRepo.callMovieDetail(id);
-    movie.fold(
-        (left) => state = state.copyWith(error: left, isLoading: false),
-        (right) => state =
-            state.copyWith(entity: right, isLoading: false, error: null));
+    await movie.fold((left) async {
+      state = state.copyWith(error: left, isLoading: false);
+    }, (right) async {
+      final imagesResponse = await movieRepo.callImages(id);
+      imagesResponse.fold(
+          (left) => state = state.copyWith(error: left, isLoading: false),
+          (image) => state = state.copyWith(
+              entity: right, isLoading: false, error: null, images: image));
+    });
   }
 }

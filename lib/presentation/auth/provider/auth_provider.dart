@@ -1,5 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:test_app/shared/app_enum.dart';
+import 'package:test_app/shared/app_helper.dart';
 
 import '../../../repository/auth/auth_repository.dart';
 import '../state/auth_state.dart';
@@ -16,7 +17,9 @@ class AuthNotifier extends _$AuthNotifier {
 
   Future<String?> startAuthWithIMDB() async {
     state = state.copyWith(isLoading: true);
+    AppHelper.myLog('Start call createRequestToken');
     final result = await authRepo.createRequestToken();
+    AppHelper.myLog('Done call createRequestToken');
     return result.fold(
       (left) {
         state = state.copyWith(error: left, isLoading: false);

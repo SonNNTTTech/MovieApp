@@ -63,17 +63,15 @@ class ApiProvider {
     Map<String, String?>? query,
     ContentType contentType = ContentType.json,
   }) async {
-    final connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.none) {
-      return const APIResponse.error(AppString.NO_INTERNET);
-    }
-
     try {
+      final connectivityResult = await (Connectivity().checkConnectivity());
+      if (connectivityResult == ConnectivityResult.none) {
+        return const APIResponse.error(AppString.NO_INTERNET);
+      }
       final response = await _dio.post(
         path,
         data: body,
         queryParameters: query,
-        options: Options(validateStatus: (status) => true),
       );
 
       if (response.statusCode == null) {
@@ -112,16 +110,14 @@ class ApiProvider {
     Map<String, dynamic>? query,
     ContentType contentType = ContentType.json,
   }) async {
-    final connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.none) {
-      return const APIResponse.error(AppString.NO_INTERNET);
-    }
-
     try {
+      final connectivityResult = await (Connectivity().checkConnectivity());
+      if (connectivityResult == ConnectivityResult.none) {
+        return const APIResponse.error(AppString.NO_INTERNET);
+      }
       final response = await _dio.get(
         path,
         queryParameters: query,
-        options: Options(validateStatus: (status) => true),
       );
       if (response.statusCode == null) {
         return const APIResponse.error(AppString.NO_INTERNET);
@@ -130,7 +126,7 @@ class ApiProvider {
       if (response.statusCode! < 300) {
         return APIResponse.success(response.data);
       } else {
-          return APIResponse.error(
+        return APIResponse.error(
             response.data['status_message'] ?? AppString.UNKNOWN_ERROR);
       }
     } on DioException catch (e) {
@@ -143,6 +139,8 @@ class ApiProvider {
         return const APIResponse.error(AppString.NO_INTERNET);
       }
       return APIResponse.error(e.message ?? AppString.UNKNOWN_ERROR);
+    } catch (e) {
+      return APIResponse.error(e.toString());
     }
   }
 }

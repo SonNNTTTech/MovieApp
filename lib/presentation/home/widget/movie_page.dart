@@ -67,7 +67,7 @@ class MoviePage extends HookConsumerWidget {
                 child: GridView.builder(
                   controller: scrollController,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    childAspectRatio: 2 / 3,
+                    childAspectRatio: 2 / 3.8,
                     crossAxisCount: 2,
                     mainAxisSpacing: 12,
                     crossAxisSpacing: 12,

@@ -45,7 +45,8 @@ class MovieWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        padding: const EdgeInsets.symmetric(horizontal: 8)
+                            .copyWith(top: 16),
                         child: Text(entity.name,
                             textAlign: TextAlign.center,
                             maxLines: 2,
@@ -64,7 +65,7 @@ class MovieWidget extends StatelessWidget {
               ],
             ),
             Positioned(
-              bottom: 49,
+              bottom: 68,
               child: RatingWidget(
                 rate: entity.rate,
               ),

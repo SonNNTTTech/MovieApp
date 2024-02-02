@@ -17,6 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$MovieDetailState {
   MovieDetailEntity? get entity => throw _privateConstructorUsedError;
+  List<String>? get images => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
   bool? get isLoading => throw _privateConstructorUsedError;
 
@@ -31,7 +32,11 @@ abstract class $MovieDetailStateCopyWith<$Res> {
           MovieDetailState value, $Res Function(MovieDetailState) then) =
       _$MovieDetailStateCopyWithImpl<$Res, MovieDetailState>;
   @useResult
-  $Res call({MovieDetailEntity? entity, String? error, bool? isLoading});
+  $Res call(
+      {MovieDetailEntity? entity,
+      List<String>? images,
+      String? error,
+      bool? isLoading});
 }
 
 /// @nodoc
@@ -48,6 +53,7 @@ class _$MovieDetailStateCopyWithImpl<$Res, $Val extends MovieDetailState>
   @override
   $Res call({
     Object? entity = freezed,
+    Object? images = freezed,
     Object? error = freezed,
     Object? isLoading = freezed,
   }) {
@@ -56,6 +62,10 @@ class _$MovieDetailStateCopyWithImpl<$Res, $Val extends MovieDetailState>
           ? _value.entity
           : entity // ignore: cast_nullable_to_non_nullable
               as MovieDetailEntity?,
+      images: freezed == images
+          ? _value.images
+          : images // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
       error: freezed == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -76,7 +86,11 @@ abstract class _$$MovieDetailStateImplCopyWith<$Res>
       __$$MovieDetailStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({MovieDetailEntity? entity, String? error, bool? isLoading});
+  $Res call(
+      {MovieDetailEntity? entity,
+      List<String>? images,
+      String? error,
+      bool? isLoading});
 }
 
 /// @nodoc
@@ -91,6 +105,7 @@ class __$$MovieDetailStateImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? entity = freezed,
+    Object? images = freezed,
     Object? error = freezed,
     Object? isLoading = freezed,
   }) {
@@ -99,6 +114,10 @@ class __$$MovieDetailStateImplCopyWithImpl<$Res>
           ? _value.entity
           : entity // ignore: cast_nullable_to_non_nullable
               as MovieDetailEntity?,
+      images: freezed == images
+          ? _value._images
+          : images // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
       error: freezed == error
           ? _value.error
           : error // ignore: cast_nullable_to_non_nullable
@@ -114,10 +133,22 @@ class __$$MovieDetailStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$MovieDetailStateImpl implements _MovieDetailState {
-  const _$MovieDetailStateImpl({this.entity, this.error, this.isLoading});
+  const _$MovieDetailStateImpl(
+      {this.entity, final List<String>? images, this.error, this.isLoading})
+      : _images = images;
 
   @override
   final MovieDetailEntity? entity;
+  final List<String>? _images;
+  @override
+  List<String>? get images {
+    final value = _images;
+    if (value == null) return null;
+    if (_images is EqualUnmodifiableListView) return _images;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   final String? error;
   @override
@@ -125,7 +156,7 @@ class _$MovieDetailStateImpl implements _MovieDetailState {
 
   @override
   String toString() {
-    return 'MovieDetailState(entity: $entity, error: $error, isLoading: $isLoading)';
+    return 'MovieDetailState(entity: $entity, images: $images, error: $error, isLoading: $isLoading)';
   }
 
   @override
@@ -134,13 +165,15 @@ class _$MovieDetailStateImpl implements _MovieDetailState {
         (other.runtimeType == runtimeType &&
             other is _$MovieDetailStateImpl &&
             (identical(other.entity, entity) || other.entity == entity) &&
+            const DeepCollectionEquality().equals(other._images, _images) &&
             (identical(other.error, error) || other.error == error) &&
             (identical(other.isLoading, isLoading) ||
                 other.isLoading == isLoading));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, entity, error, isLoading);
+  int get hashCode => Object.hash(runtimeType, entity,
+      const DeepCollectionEquality().hash(_images), error, isLoading);
 
   @JsonKey(ignore: true)
   @override
@@ -153,11 +186,14 @@ class _$MovieDetailStateImpl implements _MovieDetailState {
 abstract class _MovieDetailState implements MovieDetailState {
   const factory _MovieDetailState(
       {final MovieDetailEntity? entity,
+      final List<String>? images,
       final String? error,
       final bool? isLoading}) = _$MovieDetailStateImpl;
 
   @override
   MovieDetailEntity? get entity;
+  @override
+  List<String>? get images;
   @override
   String? get error;
   @override

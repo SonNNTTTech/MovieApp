@@ -30,6 +30,8 @@ class MovieDetailView extends HookConsumerWidget {
         .watch(movieDetailNotifierProvider.select((value) => value.isLoading));
     final entity =
         ref.watch(movieDetailNotifierProvider.select((value) => value.entity));
+    final images =
+        ref.watch(movieDetailNotifierProvider.select((value) => value.images));
 
     return Scaffold(
       appBar: AppBar(
@@ -40,13 +42,16 @@ class MovieDetailView extends HookConsumerWidget {
         ),
       ),
       body: SafeArea(
-        child: _buildBody(isLoading, error, ref, scrollController, entity),
+        child: _buildBody(
+            isLoading, error, ref, scrollController, entity, images ?? []),
       ),
     );
   }
 
   Widget _buildBody(bool? isLoading, String? error, WidgetRef ref,
-      ScrollController scrollController, MovieDetailEntity? entity) {
+      ScrollController scrollController,
+      MovieDetailEntity? entity,
+      List<String> images) {
     if (isLoading ?? true) return const Center(child: MyLoading());
     if (error != null) {
       return Center(
@@ -58,15 +63,17 @@ class MovieDetailView extends HookConsumerWidget {
         ),
       );
     }
-    return _buildContent(scrollController, entity);
+    return _buildContent(scrollController, entity, images);
   }
 
   Widget _buildContent(
-      ScrollController scrollController, MovieDetailEntity? entity) {
+      ScrollController scrollController,
+      MovieDetailEntity? entity, List<String> images) {
     if (entity == null) return Container();
     return MovieContentView(
       scrollController: scrollController,
       entity: entity,
+      images: images,
     );
   }
 }

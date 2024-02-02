@@ -2,6 +2,7 @@ import 'package:either_dart/either.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:test_app/datasource/api_provider.dart';
 import 'package:test_app/repository/auth/auth_model.dart';
+import 'package:test_app/shared/app_helper.dart';
 
 import '../shared_preferences/sp_repository.dart';
 
@@ -15,18 +16,23 @@ class AuthRepository {
   AuthRepository(this._ref);
 
   Future<Either<String, String>> createRequestToken() async {
-    final spRepo = _ref.read(spRepoProvider);
-    final savedToken = await spRepo.getRequestToken();
-    if (savedToken != null) return Right(savedToken);
-    final response = await _api.get('$headUrl/token/new');
-    return await response.when(success: (json) async {
-      final token =
-          CreateRequestTokenResponse.fromJson(json).requestToken ?? '';
-      await spRepo.setRequestToken(token);
-      return Right(token);
-    }, error: (error) {
-      return Left(error);
-    });
+    try {
+      final spRepo = _ref.read(spRepoProvider);
+      final savedToken = await spRepo.getRequestToken();
+      if (savedToken != null) return Right(savedToken);
+      final response = await _api.get('$headUrl/token/new');
+      return await response.when(success: (json) async {
+        final token =
+            CreateRequestTokenResponse.fromJson(json).requestToken ?? '';
+        await spRepo.setRequestToken(token);
+        return Right(token);
+      }, error: (error) {
+        return Left(error);
+      });
+    } catch (e) {
+      AppHelper.myLog('createRequestToken: $e');
+      return Left(e.toString());
+    }
   }
 
   Future<Either<String, String>> createSessionId() async {

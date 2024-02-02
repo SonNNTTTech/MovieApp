@@ -2,6 +2,7 @@ import 'package:either_dart/either.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:test_app/datasource/api_provider.dart';
 import 'package:test_app/presentation/movie_detail/entity/movie_detail_entity.dart';
+import 'package:test_app/repository/movie/image_model.dart';
 import 'package:test_app/repository/movie/movie_model.dart';
 import 'package:test_app/shared/app_enum.dart';
 
@@ -60,6 +61,28 @@ class MovieRepository {
     });
   }
 
+  Future<Either<String, List<String>>> callImages(int id) async {
+    final response = await _api.get('$headUrl/$id/images');
+    return response.when(success: (json) {
+      final model = ImageResponse.fromJson(json);
+      final list1 = model.backdrops!
+          .where((e) => e.aspectRatio == 1.778)
+          .map((e) => toImageUrl(e.filePath))
+          .toList();
+      final list2 = model.posters!
+          .where((e) => e.aspectRatio == 1.778)
+          .map((e) => toImageUrl(e.filePath))
+          .toList();
+      final list3 = model.logos!
+          .where((e) => e.aspectRatio == 1.778)
+          .map((e) => toImageUrl(e.filePath))
+          .toList();
+      return Right(list1 + list2 + list3);
+    }, error: (error) {
+      return Left(error);
+    });
+  }
+
   List<MovieEntity> toListMovieEntity(MovieResponse movie) {
     final list = movie.results ?? [];
     return list
@@ -69,26 +92,37 @@ class MovieRepository {
             date: e.releaseDate != null
                 ? DateTime.tryParse(e.releaseDate!)
                 : DateTime.now(),
-            imageUrl:
-                'https://image.tmdb.org/t/p/w220_and_h330_face${e.posterPath ?? ''}',
+            imageUrl: toImageUrl(e.posterPath),
             rate: ((e.voteAverage ?? 0) * 10).round()))
         .toList();
   }
 
   MovieDetailEntity toMovieDetailEntity(MovieDetailResponse movie) {
     return MovieDetailEntity(
-      id: movie.id ?? 0,
-      title: movie.title ?? '',
-      releaseDate: DateTime.tryParse(movie.releaseDate ?? ''),
-      imageUrl:
-          'https://image.tmdb.org/t/p/w220_and_h330_face${movie.posterPath ?? ''}',
-      rating: ((movie.voteAverage ?? 0) * 10).round(),
-      overview: movie.overview ?? '',
-      kinds: (movie.genres ?? []).map((e) => e.name ?? '').toList(),
-      region: movie.originalLanguage ?? '',
-      duration: runtimeToDuration(movie.runtime ?? 0),
-      slogan: movie.tagline ?? '',
-    );
+        id: movie.id ?? 0,
+        title: movie.title ?? '',
+        releaseDate: DateTime.tryParse(movie.releaseDate ?? ''),
+        imageUrl: toImageUrl(movie.posterPath),
+        rating: ((movie.voteAverage ?? 0) * 10).round(),
+        overview: movie.overview ?? '',
+        kinds: (movie.genres ?? []).map((e) => e.name ?? '').toList(),
+        region: movie.originalLanguage ?? '',
+        duration: runtimeToDuration(movie.runtime ?? 0),
+        slogan: movie.tagline ?? '',
+        productions: (movie.productionCompanies ?? [])
+            .where((e) => e.logoPath != null)
+            .map((e) => Production(
+                name: e.name ?? '', imageUrl: toImageOriginalUrl(e.logoPath)))
+            .toList(),
+        revenue: movie.revenue ?? 0);
+  }
+
+  String toImageUrl(String? path) {
+    return 'https://image.tmdb.org/t/p/w220_and_h330_face${path ?? ''}';
+  }
+
+  String toImageOriginalUrl(String? path) {
+    return 'https://image.tmdb.org/t/p/original${path ?? ''}';
   }
 
   //117 => 1h57p
