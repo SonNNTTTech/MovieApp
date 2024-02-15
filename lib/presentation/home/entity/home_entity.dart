@@ -10,5 +10,6 @@ class HomeEntity with _$HomeEntity {
     String? error,
     @Default(false) bool isNoMorePage,
     @Default(true) bool isLoading,
+    @Default(false) bool isNewPageLoading,
   }) = _HomeEntity;
 }

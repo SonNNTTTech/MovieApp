@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:test_app/generated/l10n.dart';
-import 'package:test_app/shared/app_helper.dart';
 import 'package:test_app/shared/widget/auto_hide_keyboard.dart';
 
 import '../home/widget/movie_page.dart';
@@ -21,16 +19,14 @@ class SeearchMovieView extends HookConsumerWidget {
     return AutoHideKeyboard(
       child: Scaffold(
           appBar: AppBar(
-              title: Text(S.of(context).search),
-              backgroundColor: Colors.blue,
-              actions: [_buildSearchField(ref, controller)]),
+            title: _buildSearchField(ref, controller),
+          ),
           body: MoviePage(
             entity: entity,
             onReload: () async {
               await ref.watch(searchNotifierProvider.notifier).reloadPage();
             },
             onNewPage: () async {
-              AppHelper.myLog('message');
               await ref.watch(searchNotifierProvider.notifier).getNewPage();
             },
             noDataText: keyword == null ? 'Search something' : 'No data found',
@@ -40,7 +36,6 @@ class SeearchMovieView extends HookConsumerWidget {
 
   Widget _buildSearchField(WidgetRef ref, TextEditingController controller) {
     return Container(
-      width: 180,
       height: 32,
       padding: const EdgeInsets.only(right: 4),
       child: TextField(
@@ -48,12 +43,26 @@ class SeearchMovieView extends HookConsumerWidget {
           ref.read(searchNotifierProvider.notifier).activeDebouce(value);
         },
         controller: controller,
-        decoration: const InputDecoration(
-            hintText: 'Enter keyword',
-            contentPadding: EdgeInsets.only(left: 12),
-            enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(12))),
-            suffixIcon: Icon(Icons.search)),
+        decoration: InputDecoration(
+          hintText: 'Search for movie...',
+          contentPadding: const EdgeInsets.only(left: 12),
+          focusedBorder: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(32))),
+          enabledBorder: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(32))),
+          suffixIcon: Container(
+            width: 76,
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+            alignment: Alignment.center,
+            decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(32)),
+                color: Colors.blueGrey),
+            child: const Text(
+              'Search',
+              style: TextStyle(color: Colors.white, fontSize: 11),
+            ),
+          ),
+        ),
       ),
     );
   }

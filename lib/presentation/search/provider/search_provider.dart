@@ -28,11 +28,15 @@ class SearchNotifier extends _$SearchNotifier {
         );
       }
       state = state.copyWith(
-          entity: state.entity.copyWith(movies: list, isLoading: false));
+          entity: state.entity.copyWith(
+              movies: list, isLoading: false, isNewPageLoading: false));
     });
   }
 
   Future getNewPage() async {
+    state = state.copyWith(
+      entity: state.entity.copyWith(isNewPageLoading: true),
+    );
     final result = await movieRepo.searchMovie(state.keyword ?? '',
         page: 1 + ((state.entity.movies.length) / 20).floor());
     result.fold((left) => null, (list) {
@@ -42,6 +46,9 @@ class SearchNotifier extends _$SearchNotifier {
           entity: state.entity.copyWith(isNoMorePage: true),
         );
       }
+      state = state.copyWith(
+        entity: state.entity.copyWith(isNewPageLoading: false),
+      );
     });
   }
 

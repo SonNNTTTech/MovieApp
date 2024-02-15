@@ -20,6 +20,7 @@ mixin _$HomeEntity {
   String? get error => throw _privateConstructorUsedError;
   bool get isNoMorePage => throw _privateConstructorUsedError;
   bool get isLoading => throw _privateConstructorUsedError;
+  bool get isNewPageLoading => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $HomeEntityCopyWith<HomeEntity> get copyWith =>
@@ -36,7 +37,8 @@ abstract class $HomeEntityCopyWith<$Res> {
       {List<MovieEntity> movies,
       String? error,
       bool isNoMorePage,
-      bool isLoading});
+      bool isLoading,
+      bool isNewPageLoading});
 }
 
 /// @nodoc
@@ -56,6 +58,7 @@ class _$HomeEntityCopyWithImpl<$Res, $Val extends HomeEntity>
     Object? error = freezed,
     Object? isNoMorePage = null,
     Object? isLoading = null,
+    Object? isNewPageLoading = null,
   }) {
     return _then(_value.copyWith(
       movies: null == movies
@@ -74,6 +77,10 @@ class _$HomeEntityCopyWithImpl<$Res, $Val extends HomeEntity>
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      isNewPageLoading: null == isNewPageLoading
+          ? _value.isNewPageLoading
+          : isNewPageLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -90,7 +97,8 @@ abstract class _$$HomeEntityImplCopyWith<$Res>
       {List<MovieEntity> movies,
       String? error,
       bool isNoMorePage,
-      bool isLoading});
+      bool isLoading,
+      bool isNewPageLoading});
 }
 
 /// @nodoc
@@ -108,6 +116,7 @@ class __$$HomeEntityImplCopyWithImpl<$Res>
     Object? error = freezed,
     Object? isNoMorePage = null,
     Object? isLoading = null,
+    Object? isNewPageLoading = null,
   }) {
     return _then(_$HomeEntityImpl(
       movies: null == movies
@@ -126,6 +135,10 @@ class __$$HomeEntityImplCopyWithImpl<$Res>
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool,
+      isNewPageLoading: null == isNewPageLoading
+          ? _value.isNewPageLoading
+          : isNewPageLoading // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -137,7 +150,8 @@ class _$HomeEntityImpl implements _HomeEntity {
       {required this.movies,
       this.error,
       this.isNoMorePage = false,
-      this.isLoading = true});
+      this.isLoading = true,
+      this.isNewPageLoading = false});
 
   @override
   final List<MovieEntity> movies;
@@ -149,10 +163,13 @@ class _$HomeEntityImpl implements _HomeEntity {
   @override
   @JsonKey()
   final bool isLoading;
+  @override
+  @JsonKey()
+  final bool isNewPageLoading;
 
   @override
   String toString() {
-    return 'HomeEntity(movies: $movies, error: $error, isNoMorePage: $isNoMorePage, isLoading: $isLoading)';
+    return 'HomeEntity(movies: $movies, error: $error, isNoMorePage: $isNoMorePage, isLoading: $isLoading, isNewPageLoading: $isNewPageLoading)';
   }
 
   @override
@@ -165,7 +182,9 @@ class _$HomeEntityImpl implements _HomeEntity {
             (identical(other.isNoMorePage, isNoMorePage) ||
                 other.isNoMorePage == isNoMorePage) &&
             (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading));
+                other.isLoading == isLoading) &&
+            (identical(other.isNewPageLoading, isNewPageLoading) ||
+                other.isNewPageLoading == isNewPageLoading));
   }
 
   @override
@@ -174,7 +193,8 @@ class _$HomeEntityImpl implements _HomeEntity {
       const DeepCollectionEquality().hash(movies),
       error,
       isNoMorePage,
-      isLoading);
+      isLoading,
+      isNewPageLoading);
 
   @JsonKey(ignore: true)
   @override
@@ -188,7 +208,8 @@ abstract class _HomeEntity implements HomeEntity {
       {required final List<MovieEntity> movies,
       final String? error,
       final bool isNoMorePage,
-      final bool isLoading}) = _$HomeEntityImpl;
+      final bool isLoading,
+      final bool isNewPageLoading}) = _$HomeEntityImpl;
 
   @override
   List<MovieEntity> get movies;
@@ -198,6 +219,8 @@ abstract class _HomeEntity implements HomeEntity {
   bool get isNoMorePage;
   @override
   bool get isLoading;
+  @override
+  bool get isNewPageLoading;
   @override
   @JsonKey(ignore: true)
   _$$HomeEntityImplCopyWith<_$HomeEntityImpl> get copyWith =>
