@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:readmore/readmore.dart';
 import 'package:test_app/presentation/movie_detail/widget/image_with_title.dart';
 
 import 'package:test_app/presentation/movie_detail/entity/movie_detail_entity.dart';
+import 'package:test_app/shared/widget/avatar_widget.dart';
 import 'package:test_app/shared/widget/my_network_image.dart';
 import 'package:test_app/shared/widget/rating_widget.dart';
 import 'package:test_app/shared/widget/scroll_row.dart';
@@ -128,6 +130,11 @@ class MovieContentView extends StatelessWidget {
                   entity.youtubeVideoIds.map((e) => _buildVideo(e)).toList(),
             ),
             const SizedBox(height: 12),
+            _buildTitleText('Reviews'),
+            Column(
+              children: entity.reviews.map((e) => _buildReview(e)).toList(),
+            ),
+            const SizedBox(height: 12),
             _buildTitleText('Production'),
             Column(
               children: List.generate(
@@ -230,5 +237,62 @@ class MovieContentView extends StatelessWidget {
 
   Widget _buildVideo(String youtubeId) {
     return SizedBox(width: 320, child: YoutubeVideoView(id: youtubeId));
+  }
+
+  Widget _buildReview(ReviewEntity item) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey, width: 1),
+      ),
+      child: Column(
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              AvatarWidget(
+                userName: item.name,
+                imageUrl: item.avatarUrl,
+              ),
+              const SizedBox(width: 12),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item.name,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
+                  ),
+                  Text(
+                    item.date == null
+                        ? 'Error date'
+                        : DateFormat('dd/MM/yyyy').format(item.date!),
+                    style: const TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          ReadMoreText(
+            item.content,
+            trimLines: 4,
+            colorClickableText: Colors.pink,
+            trimMode: TrimMode.Line,
+            trimCollapsedText: 'Show more',
+            trimExpandedText: 'Show less',
+            moreStyle:
+                const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+            lessStyle:
+                const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+          ),
+        ],
+      ),
+    );
   }
 }

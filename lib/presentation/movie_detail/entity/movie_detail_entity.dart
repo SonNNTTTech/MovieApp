@@ -14,6 +14,7 @@ class MovieDetailEntity {
   final List<String> keywords;
   final List<RecommendationMovie> recommendations;
   final List<String> youtubeVideoIds;
+  final List<ReviewEntity> reviews;
 
   MovieDetailEntity({
     required this.id,
@@ -31,6 +32,7 @@ class MovieDetailEntity {
     required this.keywords,
     required this.recommendations,
     required this.youtubeVideoIds,
+    required this.reviews,
   });
 }
 
@@ -52,4 +54,17 @@ class RecommendationMovie {
       required this.name,
       required this.id,
       required this.rating});
+}
+
+class ReviewEntity {
+  final String? avatarUrl;
+  final String name;
+  final DateTime? date;
+  final String content;
+  ReviewEntity({
+    this.avatarUrl,
+    required this.name,
+    this.date,
+    required this.content,
+  });
 }

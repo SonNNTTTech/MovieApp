@@ -326,3 +326,71 @@ class VideoModel {
     id = json['id'];
   }
 }
+class ReviewResponse {
+  int? id;
+  int? page;
+  List<ReviewModel>? results;
+  int? totalPages;
+  int? totalResults;
+
+  ReviewResponse(
+      {this.id, this.page, this.results, this.totalPages, this.totalResults});
+
+  ReviewResponse.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    page = json['page'];
+    if (json['results'] != null) {
+      results = <ReviewModel>[];
+      json['results'].forEach((v) {
+        results!.add(ReviewModel.fromJson(v));
+      });
+    }
+    totalPages = json['total_pages'];
+    totalResults = json['total_results'];
+  }
+}
+
+class ReviewModel {
+  String? author;
+  AuthorDetails? authorDetails;
+  String? content;
+  String? createdAt;
+  String? id;
+  String? updatedAt;
+  String? url;
+
+  ReviewModel(
+      {this.author,
+      this.authorDetails,
+      this.content,
+      this.createdAt,
+      this.id,
+      this.updatedAt,
+      this.url});
+
+  ReviewModel.fromJson(Map<String, dynamic> json) {
+    author = json['author'];
+    authorDetails = json['author_details'] != null
+        ? AuthorDetails.fromJson(json['author_details'])
+        : null;
+    content = json['content'];
+    createdAt = json['created_at'];
+    id = json['id'];
+    updatedAt = json['updated_at'];
+    url = json['url'];
+  }
+}
+
+class AuthorDetails {
+  String? name;
+  String? username;
+  String? avatarPath;
+
+  AuthorDetails({this.name, this.username, this.avatarPath});
+
+  AuthorDetails.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    username = json['username'];
+    avatarPath = json['avatar_path'];
+  }
+}

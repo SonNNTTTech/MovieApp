@@ -104,7 +104,8 @@ class MovieRepository {
         [
       callKeyword(movie.id ?? 0),
       callRecommendation(movie.id ?? 0),
-      callVideo(movie.id ?? 0)
+      callVideo(movie.id ?? 0),
+      callReview(movie.id ?? 0),
     ]);
     return MovieDetailEntity(
       id: movie.id ?? 0,
@@ -127,6 +128,7 @@ class MovieRepository {
       recommendations:
           response[1].fold((left) => [], (r) => r as List<RecommendationMovie>),
       youtubeVideoIds: response[2].fold((left) => [], (r) => r as List<String>),
+      reviews: response[3].fold((left) => [], (r) => r as List<ReviewEntity>),
     );
   }
 
@@ -196,5 +198,30 @@ class MovieRepository {
     }, error: (error) {
       return Left(error);
     });
+  }
+
+  Future<Either<String, List<ReviewEntity>>> callReview(int movieId) async {
+    final response = await _api.get('$headUrl/$movieId/reviews');
+    return response.when(
+      success: (json) {
+        final data = ReviewResponse.fromJson(json);
+        return Right(
+          data.results
+                  ?.map((e) => ReviewEntity(
+                      name: e.author ?? '',
+                      date: DateTime.tryParse(
+                        (e.updatedAt ?? '').replaceAll('Z', ''),
+                      )?.toUtc(),
+                      content: e.content ?? '',
+                      avatarUrl:
+                          toImageOriginalUrl(e.authorDetails?.avatarPath)))
+                  .toList() ??
+              [],
+        );
+      },
+      error: (error) {
+        return Left(error);
+      },
+    );
   }
 }
