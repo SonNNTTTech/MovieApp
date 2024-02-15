@@ -13,6 +13,7 @@ class MovieDetailEntity {
   final int revenue;
   final List<String> keywords;
   final List<RecommendationMovie> recommendations;
+  final List<String> youtubeVideoIds;
 
   MovieDetailEntity({
     required this.id,
@@ -29,6 +30,7 @@ class MovieDetailEntity {
     required this.revenue,
     required this.keywords,
     required this.recommendations,
+    required this.youtubeVideoIds,
   });
 }
 

@@ -101,7 +101,11 @@ class MovieRepository {
   Future<MovieDetailEntity> toMovieDetailEntity(
       MovieDetailResponse movie) async {
     final response = await Future.wait(
-        [callKeyword(movie.id ?? 0), callRecommendation(movie.id ?? 0)]);
+        [
+      callKeyword(movie.id ?? 0),
+      callRecommendation(movie.id ?? 0),
+      callVideo(movie.id ?? 0)
+    ]);
     return MovieDetailEntity(
       id: movie.id ?? 0,
       title: movie.title ?? '',
@@ -122,6 +126,7 @@ class MovieRepository {
       keywords: response[0].fold((left) => [], (r) => r as List<String>),
       recommendations:
           response[1].fold((left) => [], (r) => r as List<RecommendationMovie>),
+      youtubeVideoIds: response[2].fold((left) => [], (r) => r as List<String>),
     );
   }
 
@@ -171,7 +176,21 @@ class MovieRepository {
                   id: e.id ?? 0,
                   name: e.title ?? '',
                   rating: ((e.voteAverage ?? 0.0) * 10).round(),
-                  imagerUrl: toHorizontalImageUrl(e.posterPath)))
+                  imagerUrl: toImageOriginalUrl(e.posterPath)))
+              .toList() ??
+          []);
+    }, error: (error) {
+      return Left(error);
+    });
+  }
+
+  Future<Either<String, List<String>>> callVideo(int movieId) async {
+    final response = await _api.get('$headUrl/$movieId/videos');
+    return response.when(success: (json) {
+      final data = VideoResponse.fromJson(json);
+      return Right(data.results
+              ?.where((e) => e.site == 'YouTube')
+              .map((e) => e.key ?? '')
               .toList() ??
           []);
     }, error: (error) {

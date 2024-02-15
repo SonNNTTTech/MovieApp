@@ -7,6 +7,7 @@ import 'package:test_app/presentation/movie_detail/entity/movie_detail_entity.da
 import 'package:test_app/shared/widget/my_network_image.dart';
 import 'package:test_app/shared/widget/rating_widget.dart';
 import 'package:test_app/shared/widget/scroll_row.dart';
+import 'package:test_app/shared/widget/youtube_video_view.dart';
 
 class MovieContentView extends StatelessWidget {
   final ScrollController scrollController;
@@ -114,10 +115,17 @@ class MovieContentView extends StatelessWidget {
             const SizedBox(height: 12),
             _buildTitleText('Recommendations'),
             ScrollRow(
-              height: 160,
+              height: 180,
               children: entity.recommendations
                   .map((e) => _buildRecommendation(e))
                   .toList(),
+            ),
+            const SizedBox(height: 12),
+            _buildTitleText('Videos'),
+            ScrollRow(
+              height: 180,
+              children:
+                  entity.youtubeVideoIds.map((e) => _buildVideo(e)).toList(),
             ),
             const SizedBox(height: 12),
             _buildTitleText('Production'),
@@ -189,7 +197,13 @@ class MovieContentView extends StatelessWidget {
     return IntrinsicWidth(
       child: Column(
         children: [
-          Expanded(child: _buildAspectRatioImage(3 / 2, item.imagerUrl)),
+          Expanded(
+            child: ClipRRect(
+              borderRadius: const BorderRadius.all(Radius.circular(8)),
+              child: SizedBox(
+                  width: 220, child: MyNetworkImage(url: item.imagerUrl)),
+            ),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -198,19 +212,23 @@ class MovieContentView extends StatelessWidget {
                 constraints: const BoxConstraints(maxWidth: 160),
                 child: Text(
                   item.name,
-                  style: const TextStyle(fontSize: 13),
+                  style: const TextStyle(fontSize: 14),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
               Text(
                 '${item.rating}%',
-                style: const TextStyle(fontSize: 13),
+                style: const TextStyle(fontSize: 14),
               ),
             ],
           )
         ],
       ),
     );
+  }
+
+  Widget _buildVideo(String youtubeId) {
+    return SizedBox(width: 320, child: YoutubeVideoView(id: youtubeId));
   }
 }

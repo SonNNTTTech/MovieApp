@@ -35,9 +35,14 @@ class MovieDetailView extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Movie Detail'),
+        title: const Text(
+          'Movie Detail',
+          style: TextStyle(color: Colors.white),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.blue,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
