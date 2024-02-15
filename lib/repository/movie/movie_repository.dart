@@ -54,9 +54,10 @@ class MovieRepository {
 
   Future<Either<String, MovieDetailEntity>> callMovieDetail(int id) async {
     final response = await _api.get('$headUrl/$id');
-    return response.when(success: (json) {
-      return Right(toMovieDetailEntity(MovieDetailResponse.fromJson(json)));
-    }, error: (error) {
+    return await response.when(success: (json) async {
+      return Right(
+          await toMovieDetailEntity(MovieDetailResponse.fromJson(json)));
+    }, error: (error) async {
       return Left(error);
     });
   }
@@ -67,15 +68,15 @@ class MovieRepository {
       final model = ImageResponse.fromJson(json);
       final list1 = model.backdrops!
           .where((e) => e.aspectRatio == 1.778)
-          .map((e) => toImageUrl(e.filePath))
+          .map((e) => toVerticalImageUrl(e.filePath))
           .toList();
       final list2 = model.posters!
           .where((e) => e.aspectRatio == 1.778)
-          .map((e) => toImageUrl(e.filePath))
+          .map((e) => toVerticalImageUrl(e.filePath))
           .toList();
       final list3 = model.logos!
           .where((e) => e.aspectRatio == 1.778)
-          .map((e) => toImageUrl(e.filePath))
+          .map((e) => toVerticalImageUrl(e.filePath))
           .toList();
       return Right(list1 + list2 + list3);
     }, error: (error) {
@@ -92,33 +93,44 @@ class MovieRepository {
             date: e.releaseDate != null
                 ? DateTime.tryParse(e.releaseDate!)
                 : DateTime.now(),
-            imageUrl: toImageUrl(e.posterPath),
+            imageUrl: toVerticalImageUrl(e.posterPath),
             rate: ((e.voteAverage ?? 0) * 10).round()))
         .toList();
   }
 
-  MovieDetailEntity toMovieDetailEntity(MovieDetailResponse movie) {
+  Future<MovieDetailEntity> toMovieDetailEntity(
+      MovieDetailResponse movie) async {
+    final response = await Future.wait(
+        [callKeyword(movie.id ?? 0), callRecommendation(movie.id ?? 0)]);
     return MovieDetailEntity(
-        id: movie.id ?? 0,
-        title: movie.title ?? '',
-        releaseDate: DateTime.tryParse(movie.releaseDate ?? ''),
-        imageUrl: toImageUrl(movie.posterPath),
-        rating: ((movie.voteAverage ?? 0) * 10).round(),
-        overview: movie.overview ?? '',
-        kinds: (movie.genres ?? []).map((e) => e.name ?? '').toList(),
-        region: movie.originalLanguage ?? '',
-        duration: runtimeToDuration(movie.runtime ?? 0),
-        slogan: movie.tagline ?? '',
-        productions: (movie.productionCompanies ?? [])
-            .where((e) => e.logoPath != null)
-            .map((e) => Production(
-                name: e.name ?? '', imageUrl: toImageOriginalUrl(e.logoPath)))
-            .toList(),
-        revenue: movie.revenue ?? 0);
+      id: movie.id ?? 0,
+      title: movie.title ?? '',
+      releaseDate: DateTime.tryParse(movie.releaseDate ?? ''),
+      imageUrl: toVerticalImageUrl(movie.posterPath),
+      rating: ((movie.voteAverage ?? 0) * 10).round(),
+      overview: movie.overview ?? '',
+      kinds: (movie.genres ?? []).map((e) => e.name ?? '').toList(),
+      region: movie.originalLanguage ?? '',
+      duration: runtimeToDuration(movie.runtime ?? 0),
+      slogan: movie.tagline ?? '',
+      productions: (movie.productionCompanies ?? [])
+          .where((e) => e.logoPath != null)
+          .map((e) => Production(
+              name: e.name ?? '', imageUrl: toImageOriginalUrl(e.logoPath)))
+          .toList(),
+      revenue: movie.revenue ?? 0,
+      keywords: response[0].fold((left) => [], (r) => r as List<String>),
+      recommendations:
+          response[1].fold((left) => [], (r) => r as List<RecommendationMovie>),
+    );
   }
 
-  String toImageUrl(String? path) {
+  String toVerticalImageUrl(String? path) {
     return 'https://image.tmdb.org/t/p/w220_and_h330_face${path ?? ''}';
+  }
+
+  String toHorizontalImageUrl(String? path) {
+    return 'https://image.tmdb.org/t/p/w500${path ?? ''}';
   }
 
   String toImageOriginalUrl(String? path) {
@@ -137,5 +149,33 @@ class MovieRepository {
       result += '${minutes}m';
     }
     return result;
+  }
+
+  Future<Either<String, List<String>>> callKeyword(int movieId) async {
+    final response = await _api.get('$headUrl/$movieId/keywords');
+    return response.when(success: (json) {
+      final data = KeywordResponse.fromJson(json);
+      return Right(data.keywords?.map((e) => e.name ?? '').toList() ?? []);
+    }, error: (error) {
+      return Left(error);
+    });
+  }
+
+  Future<Either<String, List<RecommendationMovie>>> callRecommendation(
+      int movieId) async {
+    final response = await _api.get('$headUrl/$movieId/recommendations');
+    return response.when(success: (json) {
+      final data = RecommendationResponse.fromJson(json);
+      return Right(data.results
+              ?.map((e) => RecommendationMovie(
+                  id: e.id ?? 0,
+                  name: e.title ?? '',
+                  rating: ((e.voteAverage ?? 0.0) * 10).round(),
+                  imagerUrl: toHorizontalImageUrl(e.posterPath)))
+              .toList() ??
+          []);
+    }, error: (error) {
+      return Left(error);
+    });
   }
 }

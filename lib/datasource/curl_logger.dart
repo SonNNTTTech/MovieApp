@@ -26,7 +26,8 @@ class CurlLoggerDioInterceptor extends Interceptor {
     Response response,
     ResponseInterceptorHandler handler,
   ) {
-    AppHelper.myLog('Responsee: ${response.data.toString().substring(0, 200)}');
+    AppHelper.myLog(
+        'Responsee: ${response.data.toString().length < 201 ? response.data.toString() : response.data.toString().substring(0, 200)}');
     return super.onResponse(response, handler);
   }
 

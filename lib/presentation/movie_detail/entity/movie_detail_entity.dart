@@ -11,6 +11,8 @@ class MovieDetailEntity {
   final String slogan;
   final List<Production> productions;
   final int revenue;
+  final List<String> keywords;
+  final List<RecommendationMovie> recommendations;
 
   MovieDetailEntity({
     required this.id,
@@ -25,6 +27,8 @@ class MovieDetailEntity {
     required this.slogan,
     required this.productions,
     required this.revenue,
+    required this.keywords,
+    required this.recommendations,
   });
 }
 
@@ -33,4 +37,17 @@ class Production {
   final String imageUrl;
 
   Production({required this.name, required this.imageUrl});
+}
+
+class RecommendationMovie {
+  final String imagerUrl;
+  final String name;
+  final int id;
+  final int rating;
+
+  RecommendationMovie(
+      {required this.imagerUrl,
+      required this.name,
+      required this.id,
+      required this.rating});
 }

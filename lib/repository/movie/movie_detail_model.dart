@@ -172,3 +172,103 @@ class SpokenLanguages {
     name = json['name'];
   }
 }
+class KeywordResponse {
+  int? id;
+  List<Keywords>? keywords;
+
+  KeywordResponse({this.id, this.keywords});
+
+  KeywordResponse.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    if (json['keywords'] != null) {
+      keywords = <Keywords>[];
+      json['keywords'].forEach((v) {
+        keywords!.add(Keywords.fromJson(v));
+      });
+    }
+  }
+}
+
+class Keywords {
+  int? id;
+  String? name;
+
+  Keywords({this.id, this.name});
+
+  Keywords.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+  }
+}
+
+class RecommendationResponse {
+  int? page;
+  List<RecommendationResult>? results;
+  int? totalPages;
+  int? totalResults;
+
+  RecommendationResponse(
+      {this.page, this.results, this.totalPages, this.totalResults});
+
+  RecommendationResponse.fromJson(Map<String, dynamic> json) {
+    page = json['page'];
+    if (json['results'] != null) {
+      results = <RecommendationResult>[];
+      json['results'].forEach((v) {
+        results!.add(RecommendationResult.fromJson(v));
+      });
+    }
+    totalPages = json['total_pages'];
+    totalResults = json['total_results'];
+  }
+}
+
+class RecommendationResult {
+  bool? adult;
+  String? backdropPath;
+  int? id;
+  String? title;
+  String? originalLanguage;
+  String? originalTitle;
+  String? overview;
+  String? posterPath;
+  String? mediaType;
+  double? popularity;
+  String? releaseDate;
+  bool? video;
+  double? voteAverage;
+  int? voteCount;
+
+  RecommendationResult(
+      {this.adult,
+      this.backdropPath,
+      this.id,
+      this.title,
+      this.originalLanguage,
+      this.originalTitle,
+      this.overview,
+      this.posterPath,
+      this.mediaType,
+      this.popularity,
+      this.releaseDate,
+      this.video,
+      this.voteAverage,
+      this.voteCount});
+
+  RecommendationResult.fromJson(Map<String, dynamic> json) {
+    adult = json['adult'];
+    backdropPath = json['backdrop_path'];
+    id = json['id'];
+    title = json['title'];
+    originalLanguage = json['original_language'];
+    originalTitle = json['original_title'];
+    overview = json['overview'];
+    posterPath = json['poster_path'];
+    mediaType = json['media_type'];
+    popularity = json['popularity'];
+    releaseDate = json['release_date'];
+    video = json['video'];
+    voteAverage = json['vote_average'];
+    voteCount = json['vote_count'];
+  }
+}
