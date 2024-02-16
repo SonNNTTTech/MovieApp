@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:test_app/presentation/home/entity/home_entity.dart';
 import 'package:test_app/repository/movie/movie_repository.dart';
-import 'package:test_app/shared/app_helper.dart';
 
 import '../state/search_state.dart';
 
@@ -14,7 +14,11 @@ class SearchNotifier extends _$SearchNotifier {
   late final movieRepo = ref.read(movieRepoProvider);
   @override
   SearchState build() {
-    return const SearchState(entity: HomeEntity(movies: []), keyword: 'Marvel');
+    const keyword = 'Marvel';
+    return SearchState(
+        entity: const HomeEntity(movies: []),
+        keyword: keyword,
+        controller: TextEditingController(text: keyword));
   }
 
   Future reloadPage() async {
@@ -22,7 +26,6 @@ class SearchNotifier extends _$SearchNotifier {
     final result = await movieRepo.searchMovie(state.keyword ?? '');
     result.fold((left) => null, (list) {
       if (list.length < 20) {
-        AppHelper.myLog('list.length < 20');
         state = state.copyWith(
           entity: state.entity.copyWith(isNoMorePage: true),
         );
@@ -55,13 +58,13 @@ class SearchNotifier extends _$SearchNotifier {
   Timer? _timer;
 
   void search(String newKeyword) {
+    state.controller.text = newKeyword;
     state = state.copyWith(
         keyword: newKeyword, entity: state.entity.copyWith(isLoading: true));
     reloadPage();
   }
 
   void activeDebouce(String newKeyword) {
-    if (newKeyword.isEmpty) return;
     if (_timer != null) {
       _timer!.cancel();
     }

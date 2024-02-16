@@ -12,12 +12,16 @@ class MoviePage extends ConsumerStatefulWidget {
   final Future Function() onReload;
   final Future Function() onNewPage;
   final String? noDataText;
+  final bool isHideEndContent;
+  final bool isNeedInitial;
   const MoviePage({
     super.key,
     required this.entity,
     required this.onReload,
     required this.onNewPage,
     this.noDataText,
+    this.isHideEndContent = false,
+    this.isNeedInitial = true,
   });
 
   @override
@@ -28,9 +32,11 @@ class _MoviePageState extends ConsumerState<MoviePage> {
   late ScrollController scrollController;
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      widget.onReload();
-    });
+    if (widget.isNeedInitial) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        widget.onReload();
+      });
+    }
     scrollController = getScrollController(onBottomScroll);
     super.initState();
   }
@@ -84,13 +90,7 @@ class _MoviePageState extends ConsumerState<MoviePage> {
                 ),
               ),
             ),
-            Container(
-              alignment: Alignment.center,
-              padding: const EdgeInsets.symmetric(
-                vertical: 20,
-              ),
-              child: _buildBottom(),
-            ),
+            _buildBottom(),
           ],
         ),
       ),
@@ -98,9 +98,20 @@ class _MoviePageState extends ConsumerState<MoviePage> {
   }
 
   Widget _buildBottom() {
-    if (widget.entity.isNoMorePage) return const Text('End content');
-    return widget.entity.isNewPageLoading
-        ? const MyLoading()
-        : const SizedBox.shrink();
+    Widget? child;
+    if (widget.entity.isNoMorePage && !widget.isHideEndContent) {
+      child = const Text('End content');
+    }
+    if (widget.entity.isNewPageLoading) {
+      child = const MyLoading();
+    }
+    if (child == null) return Container();
+    return Container(
+      alignment: Alignment.center,
+      padding: const EdgeInsets.symmetric(
+        vertical: 20,
+      ),
+      child: child,
+    );
   }
 }
