@@ -17,8 +17,8 @@ class MovieWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => MovieDetailView(id: entity.id))),
+      onTap: () => Navigator.of(context)
+          .pushNamed(MovieDetailView.route, arguments: entity.id),
       child: Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),

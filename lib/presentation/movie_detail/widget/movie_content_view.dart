@@ -231,8 +231,8 @@ class MovieContentView extends ConsumerWidget {
 
   Widget _buildRecommendation(RecommendationMovie item, BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(builder: (_) => MovieDetailView(id: item.id))),
+      onTap: () => Navigator.of(context)
+          .pushNamed(MovieDetailView.route, arguments: item.id),
       child: IntrinsicWidth(
         child: Column(
           children: [

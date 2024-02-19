@@ -5,8 +5,11 @@ import 'package:test_app/shared/widget/auto_hide_keyboard.dart';
 import '../home/widget/movie_page.dart';
 import 'provider/search_provider.dart';
 
-class SeearchMovieView extends ConsumerWidget {
-  const SeearchMovieView({super.key});
+final searchKey = GlobalKey();
+
+class SearchMovieView extends ConsumerWidget {
+  static const route = '/search';
+  const SearchMovieView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -17,6 +20,7 @@ class SeearchMovieView extends ConsumerWidget {
     final controller =
         ref.watch(searchNotifierProvider.select((value) => value.controller));
     return AutoHideKeyboard(
+      key: searchKey,
       child: Scaffold(
           appBar: AppBar(
             title: _buildSearchField(ref, controller),

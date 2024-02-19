@@ -7,6 +7,8 @@ import 'package:test_app/presentation/bottom_bar/provider/bottom_bar_provider.da
 import 'package:test_app/presentation/home/widget/home_view.dart';
 import 'package:test_app/presentation/search/search_movie_view.dart';
 
+import 'app_route.dart';
+
 class BottomBarWidget extends ConsumerWidget {
   const BottomBarWidget({super.key});
 
@@ -36,7 +38,7 @@ class BottomBarWidget extends ConsumerWidget {
   }
 
   List<Widget> _buildScreens() {
-    return [const HomeView(), const SeearchMovieView(), const AuthView()];
+    return [const HomeView(), const SearchMovieView(), const AuthView()];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
@@ -46,12 +48,20 @@ class BottomBarWidget extends ConsumerWidget {
         title: ("Home"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
+        routeAndNavigatorSettings: const RouteAndNavigatorSettings(
+          initialRoute: HomeView.route,
+          onGenerateRoute: AppRoutes.onGenerated,
+        ),
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.search),
         title: ("Search"),
         activeColorPrimary: CupertinoColors.activeBlue,
         inactiveColorPrimary: CupertinoColors.systemGrey,
+        routeAndNavigatorSettings: const RouteAndNavigatorSettings(
+          initialRoute: SearchMovieView.route,
+          onGenerateRoute: AppRoutes.onGenerated,
+        ),
       ),
       PersistentBottomNavBarItem(
         icon: const Icon(CupertinoIcons.person),
