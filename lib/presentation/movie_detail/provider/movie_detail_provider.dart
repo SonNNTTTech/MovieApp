@@ -31,6 +31,7 @@ class MovieDetailNotifier extends _$MovieDetailNotifier {
 
   void onKeywordClick(String keyword) {
     ref.read(bottomBarNotifierProvider.notifier).changeTab(1);
+    //delay for initialize searchNotifierProvider
     Future.delayed(const Duration(seconds: 1), () {
       ref.read(searchNotifierProvider.notifier).search(keyword);
     });
