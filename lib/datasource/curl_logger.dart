@@ -13,14 +13,6 @@ class CurlLoggerDioInterceptor extends Interceptor {
     _renderCurlRepresentation(options);
     super.onRequest(options, handler);
   }
-
-  @override
-  void onError(DioException err, ErrorInterceptorHandler handler) {
-    _renderCurlRepresentation(err.requestOptions);
-
-    return super.onError(err, handler); //continue
-  }
-
   @override
   void onResponse(
     Response response,

@@ -50,8 +50,11 @@ class _AppWebViewState extends State<AppWebView> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          LinearProgressIndicator(
-                            value: progress / 100,
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 40),
+                            child: LinearProgressIndicator(
+                              value: progress / 100,
+                            ),
                           ),
                           const SizedBox(
                             height: 20,

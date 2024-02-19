@@ -14,13 +14,14 @@ class RetryOnConnectionChangeInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    if (_shouldRetry(err)) {
-      try {
+    try {
+      if (_shouldRetry(err)) {
         requestRetrier.scheduleRequestRetry(err.requestOptions);
-      } catch (e) {
-        AppHelper.myLog('Error API: $e');
       }
+    } catch (e) {
+      AppHelper.myLog('Error API: $e');
     }
+    super.onError(err, handler);
   }
 
   bool _shouldRetry(DioException err) {
