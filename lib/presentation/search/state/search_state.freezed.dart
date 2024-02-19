@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$SearchState {
   String? get keyword => throw _privateConstructorUsedError;
   HomeEntity get entity => throw _privateConstructorUsedError;
+  TextEditingController get controller => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $SearchStateCopyWith<SearchState> get copyWith =>
@@ -30,7 +31,8 @@ abstract class $SearchStateCopyWith<$Res> {
           SearchState value, $Res Function(SearchState) then) =
       _$SearchStateCopyWithImpl<$Res, SearchState>;
   @useResult
-  $Res call({String? keyword, HomeEntity entity});
+  $Res call(
+      {String? keyword, HomeEntity entity, TextEditingController controller});
 
   $HomeEntityCopyWith<$Res> get entity;
 }
@@ -50,6 +52,7 @@ class _$SearchStateCopyWithImpl<$Res, $Val extends SearchState>
   $Res call({
     Object? keyword = freezed,
     Object? entity = null,
+    Object? controller = null,
   }) {
     return _then(_value.copyWith(
       keyword: freezed == keyword
@@ -60,6 +63,10 @@ class _$SearchStateCopyWithImpl<$Res, $Val extends SearchState>
           ? _value.entity
           : entity // ignore: cast_nullable_to_non_nullable
               as HomeEntity,
+      controller: null == controller
+          ? _value.controller
+          : controller // ignore: cast_nullable_to_non_nullable
+              as TextEditingController,
     ) as $Val);
   }
 
@@ -80,7 +87,8 @@ abstract class _$$SearchStateImplCopyWith<$Res>
       __$$SearchStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String? keyword, HomeEntity entity});
+  $Res call(
+      {String? keyword, HomeEntity entity, TextEditingController controller});
 
   @override
   $HomeEntityCopyWith<$Res> get entity;
@@ -99,6 +107,7 @@ class __$$SearchStateImplCopyWithImpl<$Res>
   $Res call({
     Object? keyword = freezed,
     Object? entity = null,
+    Object? controller = null,
   }) {
     return _then(_$SearchStateImpl(
       keyword: freezed == keyword
@@ -109,6 +118,10 @@ class __$$SearchStateImplCopyWithImpl<$Res>
           ? _value.entity
           : entity // ignore: cast_nullable_to_non_nullable
               as HomeEntity,
+      controller: null == controller
+          ? _value.controller
+          : controller // ignore: cast_nullable_to_non_nullable
+              as TextEditingController,
     ));
   }
 }
@@ -116,16 +129,19 @@ class __$$SearchStateImplCopyWithImpl<$Res>
 /// @nodoc
 
 class _$SearchStateImpl implements _SearchState {
-  const _$SearchStateImpl({this.keyword, required this.entity});
+  const _$SearchStateImpl(
+      {this.keyword, required this.entity, required this.controller});
 
   @override
   final String? keyword;
   @override
   final HomeEntity entity;
+  @override
+  final TextEditingController controller;
 
   @override
   String toString() {
-    return 'SearchState(keyword: $keyword, entity: $entity)';
+    return 'SearchState(keyword: $keyword, entity: $entity, controller: $controller)';
   }
 
   @override
@@ -134,11 +150,13 @@ class _$SearchStateImpl implements _SearchState {
         (other.runtimeType == runtimeType &&
             other is _$SearchStateImpl &&
             (identical(other.keyword, keyword) || other.keyword == keyword) &&
-            (identical(other.entity, entity) || other.entity == entity));
+            (identical(other.entity, entity) || other.entity == entity) &&
+            (identical(other.controller, controller) ||
+                other.controller == controller));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, keyword, entity);
+  int get hashCode => Object.hash(runtimeType, keyword, entity, controller);
 
   @JsonKey(ignore: true)
   @override
@@ -150,12 +168,15 @@ class _$SearchStateImpl implements _SearchState {
 abstract class _SearchState implements SearchState {
   const factory _SearchState(
       {final String? keyword,
-      required final HomeEntity entity}) = _$SearchStateImpl;
+      required final HomeEntity entity,
+      required final TextEditingController controller}) = _$SearchStateImpl;
 
   @override
   String? get keyword;
   @override
   HomeEntity get entity;
+  @override
+  TextEditingController get controller;
   @override
   @JsonKey(ignore: true)
   _$$SearchStateImplCopyWith<_$SearchStateImpl> get copyWith =>

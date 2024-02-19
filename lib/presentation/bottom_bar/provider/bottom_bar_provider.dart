@@ -16,4 +16,9 @@ class BottomBarNotifier extends _$BottomBarNotifier {
     return BottomBarState(
         indexTab: 0, controller: PersistentTabController(initialIndex: 0));
   }
+
+  void changeTab(int index) {
+    state.controller.jumpToTab(index);
+    state = state.copyWith(indexTab: index);
+  }
 }

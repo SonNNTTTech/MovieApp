@@ -1,4 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:test_app/presentation/bottom_bar/provider/bottom_bar_provider.dart';
+import 'package:test_app/presentation/search/provider/search_provider.dart';
 
 import '../../../repository/movie/movie_repository.dart';
 import '../state/movie_detail_state.dart';
@@ -9,7 +11,7 @@ part 'movie_detail_provider.g.dart';
 class MovieDetailNotifier extends _$MovieDetailNotifier {
   late final movieRepo = ref.read(movieRepoProvider);
   @override
-  MovieDetailState build() {
+  MovieDetailState build(int id) {
     return const MovieDetailState();
   }
 
@@ -24,6 +26,14 @@ class MovieDetailNotifier extends _$MovieDetailNotifier {
           (left) => state = state.copyWith(error: left, isLoading: false),
           (image) => state = state.copyWith(
               entity: right, isLoading: false, error: null, images: image));
+    });
+  }
+
+  void onKeywordClick(String keyword) {
+    ref.read(bottomBarNotifierProvider.notifier).changeTab(1);
+    //delay for initialize searchNotifierProvider
+    Future.delayed(const Duration(seconds: 1), () {
+      ref.read(searchNotifierProvider.notifier).search(keyword);
     });
   }
 }

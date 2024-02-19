@@ -21,17 +21,21 @@ class MovieDetailView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final scrollController = useScrollController();
     usePostFrameCallback(() {
-      ref.read(movieDetailNotifierProvider.notifier).loadMovieDetail(id);
+      ref.read(movieDetailNotifierProvider(id).notifier).loadMovieDetail(id);
       return () => () {};
     }, const []);
     final error =
-        ref.watch(movieDetailNotifierProvider.select((value) => value.error));
+        ref
+        .watch(movieDetailNotifierProvider(id).select((value) => value.error));
     final isLoading = ref
-        .watch(movieDetailNotifierProvider.select((value) => value.isLoading));
+        .watch(
+        movieDetailNotifierProvider(id).select((value) => value.isLoading));
     final entity =
-        ref.watch(movieDetailNotifierProvider.select((value) => value.entity));
+        ref
+        .watch(movieDetailNotifierProvider(id).select((value) => value.entity));
     final images =
-        ref.watch(movieDetailNotifierProvider.select((value) => value.images));
+        ref
+        .watch(movieDetailNotifierProvider(id).select((value) => value.images));
 
     return Scaffold(
       appBar: AppBar(
@@ -63,7 +67,7 @@ class MovieDetailView extends HookConsumerWidget {
         child: MyErrorWidget(
           text: error,
           onRetry: () => ref
-              .read(movieDetailNotifierProvider.notifier)
+              .read(movieDetailNotifierProvider(id).notifier)
               .loadMovieDetail(id),
         ),
       );

@@ -24,7 +24,8 @@ class MyNetworkImage extends StatelessWidget {
                   const ColorFilter.mode(Colors.red, BlendMode.colorBurn)),
         ),
       ),
-      errorWidget: (context, url, error) => const Icon(Icons.error),
+      errorWidget: (context, url, error) =>
+          const Center(child: Icon(Icons.error)),
     );
   }
 }

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:test_app/shared/widget/auto_hide_keyboard.dart';
 
 import '../home/widget/movie_page.dart';
 import 'provider/search_provider.dart';
 
-class SeearchMovieView extends HookConsumerWidget {
+class SeearchMovieView extends ConsumerWidget {
   const SeearchMovieView({super.key});
 
   @override
@@ -15,21 +14,48 @@ class SeearchMovieView extends HookConsumerWidget {
         ref.watch(searchNotifierProvider.select((value) => value.entity));
     final keyword =
         ref.watch(searchNotifierProvider.select((value) => value.keyword));
-    final controller = useTextEditingController(text: keyword);
+    final controller =
+        ref.watch(searchNotifierProvider.select((value) => value.controller));
     return AutoHideKeyboard(
       child: Scaffold(
           appBar: AppBar(
             title: _buildSearchField(ref, controller),
           ),
-          body: MoviePage(
-            entity: entity,
-            onReload: () async {
-              await ref.watch(searchNotifierProvider.notifier).reloadPage();
-            },
-            onNewPage: () async {
-              await ref.watch(searchNotifierProvider.notifier).getNewPage();
-            },
-            noDataText: keyword == null ? 'Search something' : 'No data found',
+          body: Column(
+            children: [
+              keyword?.isEmpty ?? true
+                  ? const SizedBox()
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          'Search results for "$keyword":',
+                          style: const TextStyle(fontStyle: FontStyle.italic),
+                        ),
+                        const SizedBox(width: 20),
+                      ],
+                    ),
+              const SizedBox(height: 8),
+              Expanded(
+                child: MoviePage(
+                  entity: entity,
+                  onReload: () async {
+                    await ref
+                        .watch(searchNotifierProvider.notifier)
+                        .reloadPage();
+                  },
+                  onNewPage: () async {
+                    await ref
+                        .watch(searchNotifierProvider.notifier)
+                        .getNewPage();
+                  },
+                  noDataText: keyword?.isEmpty ?? true
+                      ? 'Search something'
+                      : 'No data found',
+                  isHideEndContent: true,
+                ),
+              ),
+            ],
           )),
     );
   }
