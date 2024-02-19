@@ -11,6 +11,8 @@ import '../state/search_state.dart';
 
 part 'search_provider.g.dart';
 
+bool isSearchInitialized = false;
+
 @riverpod
 class SearchNotifier extends _$SearchNotifier {
   late final movieRepo = ref.read(movieRepoProvider);
@@ -60,10 +62,13 @@ class SearchNotifier extends _$SearchNotifier {
   Timer? _timer;
 
   void search(String newKeyword) {
+    isSearchInitialized = true;
     if (AppRoutes.lastRoute != SearchMovieView.route) {
-      final context = searchKey.currentContext!;
-      Navigator.of(context)
+      final context = searchKey.currentContext;
+      if (context != null) {
+        Navigator.of(context)
           .popUntil((route) => route.settings.name == SearchMovieView.route);
+      }
     }
     state.controller.text = newKeyword;
     state = state.copyWith(
