@@ -13,22 +13,19 @@ class CurlLoggerDioInterceptor extends Interceptor {
     _renderCurlRepresentation(options);
     super.onRequest(options, handler);
   }
-
-  @override
-  void onError(DioException err, ErrorInterceptorHandler handler) {
-    _renderCurlRepresentation(err.requestOptions);
-
-    return super.onError(err, handler); //continue
-  }
-
   @override
   void onResponse(
     Response response,
     ResponseInterceptorHandler handler,
   ) {
-    AppHelper.myLog(
-        'Responsee: ${response.data.toString().length < 201 ? response.data.toString() : response.data.toString().substring(0, 200)}');
+    AppHelper.limitLog('Responsee: ${response.data.toString()}');
     return super.onResponse(response, handler);
+  }
+
+  @override
+  void onError(DioException err, ErrorInterceptorHandler handler) {
+    AppHelper.limitLog('Responsee error: ${err.response?.data.toString()}');
+    super.onError(err, handler);
   }
 
   void _renderCurlRepresentation(RequestOptions requestOptions) {

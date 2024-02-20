@@ -32,6 +32,7 @@ class ApiProvider {
           'Authorization':
               r'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4MjcyMGJmN2VjZDgzYWRjZDI0Yjg4ODhjMDllYmVjNyIsInN1YiI6IjY1YWUzYmM5MDljMjRjMDBhZDAxOWY0MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.N9iLYcvpeqfqgBkpmqSMM_IDbM1lUq59pF1FMNqh-7c',
           'accept': 'application/json',
+          //   'content-length': '60',
         },
       ),
     );
@@ -100,8 +101,8 @@ class ApiProvider {
         }
       }
       return APIResponse.error(e.message ?? AppString.UNKNOWN_ERROR);
-    } on Error catch (e) {
-      return APIResponse.error(e.stackTrace.toString());
+    } catch (e) {
+      return APIResponse.error(e.toString());
     }
   }
 
@@ -137,6 +138,54 @@ class ApiProvider {
           e.type == DioExceptionType.receiveTimeout ||
           e.type == DioExceptionType.sendTimeout) {
         return const APIResponse.error(AppString.NO_INTERNET);
+      }
+      return APIResponse.error(e.message ?? AppString.UNKNOWN_ERROR);
+    } catch (e) {
+      return APIResponse.error(e.toString());
+    }
+  }
+
+  Future<APIResponse> delete(
+    String path,
+    dynamic body, {
+    Map<String, String?>? query,
+    ContentType contentType = ContentType.json,
+  }) async {
+    try {
+      final connectivityResult = await (Connectivity().checkConnectivity());
+      if (connectivityResult == ConnectivityResult.none) {
+        return const APIResponse.error(AppString.NO_INTERNET);
+      }
+      final response = await _dio.delete(
+        path,
+        data: body,
+        queryParameters: query,
+      );
+
+      if (response.statusCode == null) {
+        return const APIResponse.error(AppString.NO_INTERNET);
+      }
+
+      if (response.statusCode! < 300) {
+        return APIResponse.success(response.data);
+      } else {
+        return APIResponse.error(response.data['status_message'] as String);
+      }
+    } on DioException catch (e) {
+      if (e.error is SocketException) {
+        return const APIResponse.error(AppString.NO_INTERNET);
+      }
+      if (e.type == DioExceptionType.connectionTimeout ||
+          e.type == DioExceptionType.receiveTimeout ||
+          e.type == DioExceptionType.sendTimeout) {
+        return const APIResponse.error(AppString.NO_INTERNET);
+      }
+
+      if (e.response != null) {
+        if (e.response!.data['status_message'] != null) {
+          return APIResponse.error(
+              e.response!.data['status_message'] as String);
+        }
       }
       return APIResponse.error(e.message ?? AppString.UNKNOWN_ERROR);
     } catch (e) {

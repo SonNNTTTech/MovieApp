@@ -15,11 +15,31 @@ class AuthRepository {
   final headUrl = '/authentication';
   AuthRepository(this._ref);
 
+  Future<Either<String, bool>> validateWithLogin(
+      {required String userName, required String password}) async {
+    try {
+      final spRepo = _ref.read(spRepoProvider);
+      final body = {
+        'username': userName,
+        'password': password,
+        'request_token': await spRepo.getRequestToken(),
+      };
+      final response =
+          await _api.post('$headUrl/token/validate_with_login', body);
+      return await response.when(success: (json) async {
+        return const Right(true);
+      }, error: (error) {
+        return Left(error);
+      });
+    } catch (e) {
+      AppHelper.myLog('validateWithLogin: $e');
+      return Left(e.toString());
+    }
+  }
+
   Future<Either<String, String>> createRequestToken() async {
     try {
       final spRepo = _ref.read(spRepoProvider);
-      final savedToken = await spRepo.getRequestToken();
-      if (savedToken != null) return Right(savedToken);
       final response = await _api.get('$headUrl/token/new');
       return await response.when(success: (json) async {
         final token =
@@ -43,7 +63,7 @@ class AuthRepository {
       final sessionId = CreateSessionIdResponse.fromJson(json).sessionId!;
       await spRepo.setSessionId(sessionId);
       return Right(sessionId);
-    }, error: (error) {
+    }, error: (error) async {
       spRepo.deleteRequestToken();
       return Left(error);
     });
@@ -62,16 +82,13 @@ class AuthRepository {
     });
   }
 
-  Future<Either<String, UserResponse>> getUser() async {
+  Future<Either<String, bool>> deleteSession() async {
     final spRepo = _ref.read(spRepoProvider);
-    final queryParameters = <String, dynamic>{};
-    queryParameters['session_id'] = await spRepo.getSessionId();
-    final response = await _api.get('$headUrl/account', query: queryParameters);
+    final body = {'session_id': await spRepo.getSessionId()};
+    final response = await _api.delete('$headUrl/session', body);
     return await response.when(success: (json) async {
-      final user = UserResponse.fromJson(json);
-      await spRepo.setAccountId(user.id ?? -1);
-      return Right(user);
-    }, error: (error) {
+      return const Right(true);
+    }, error: (error) async {
       return Left(error);
     });
   }

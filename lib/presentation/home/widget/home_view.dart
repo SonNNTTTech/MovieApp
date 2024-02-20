@@ -10,6 +10,7 @@ import '../provider/home_provider.dart';
 import 'movie_page.dart';
 
 class HomeView extends ConsumerWidget {
+  static const route = '/home';
   const HomeView({super.key});
 
   @override

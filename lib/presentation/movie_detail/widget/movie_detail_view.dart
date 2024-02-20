@@ -11,6 +11,7 @@ import '../entity/movie_detail_entity.dart';
 import 'movie_content_view.dart';
 
 class MovieDetailView extends HookConsumerWidget {
+  static const route = '/movie_detail';
   final int id;
   const MovieDetailView({
     super.key,

@@ -5,5 +5,8 @@ part 'app_state.freezed.dart';
 
 @freezed
 class AppState with _$AppState {
-  const factory AppState({required Locale locale}) = _AppState;
+  const factory AppState({
+    required Locale locale,
+    @Default(true) bool isLoading,
+  }) = _AppState;
 }
