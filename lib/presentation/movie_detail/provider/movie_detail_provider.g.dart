@@ -7,7 +7,7 @@ part of 'movie_detail_provider.dart';
 // **************************************************************************
 
 String _$movieDetailNotifierHash() =>
-    r'fc3931e9fa5fba0a84fff632303a768380990e34';
+    r'3bfa414cd624985820fdaddea3b31bab269dbe07';
 
 /// Copied from Dart SDK
 class _SystemHash {

@@ -43,7 +43,7 @@ class MovieContentView extends ConsumerWidget {
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: _buildDetailMovie(),
+                  child: _buildDetailMovie(ref),
                 ),
               ],
             ),
@@ -143,7 +143,7 @@ class MovieContentView extends ConsumerWidget {
     );
   }
 
-  Widget _buildDetailMovie() {
+  Widget _buildDetailMovie(WidgetRef ref) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -182,8 +182,17 @@ class MovieContentView extends ConsumerWidget {
           children: [
             RatingWidget(rate: entity.rating),
             IconButton.filled(
-                onPressed: () {}, icon: const Icon(Icons.favorite)),
-            IconButton.filled(onPressed: () {}, icon: const Icon(Icons.list)),
+                onPressed: () => ref
+                    .read(movieDetailNotifierProvider(entity.id).notifier)
+                    .onFavoriteClick(),
+                icon: Icon(
+                  Icons.favorite,
+                  color: ref.watch(movieDetailNotifierProvider(entity.id)
+                          .select((value) => value.isFavorited))
+                      ? Colors.red
+                      : null,
+                )),
+            // IconButton.filled(onPressed: () {}, icon: const Icon(Icons.list)),
           ],
         ),
       ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:test_app/presentation/home/entity/home_entity.dart';
+import 'package:test_app/presentation/home/entity/movie_page_state.dart';
 
 part 'search_state.freezed.dart';
 
@@ -8,7 +8,7 @@ part 'search_state.freezed.dart';
 class SearchState with _$SearchState {
   const factory SearchState({
     String? keyword,
-    required HomeEntity entity,
+    required MoviePageState entity,
     required TextEditingController controller,
   }) =
       _SearchState;

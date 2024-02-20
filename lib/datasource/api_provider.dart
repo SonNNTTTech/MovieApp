@@ -61,7 +61,7 @@ class ApiProvider {
   Future<APIResponse> post(
     String path,
     dynamic body, {
-    Map<String, String?>? query,
+    Map<String, dynamic>? query,
     ContentType contentType = ContentType.json,
   }) async {
     try {

@@ -1,3 +1,4 @@
+// ignore_for_file: avoid_public_notifier_properties, avoid_manual_providers_as_generated_provider_dependency
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:test_app/repository/account/account_repository.dart';
 import 'package:test_app/shared/app_enum.dart';

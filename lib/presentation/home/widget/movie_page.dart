@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:test_app/presentation/home/entity/home_entity.dart';
+import 'package:test_app/presentation/home/entity/movie_page_state.dart';
 import 'package:test_app/shared/scroll_helper.dart';
 import 'package:test_app/shared/widget/my_error_widget.dart';
 import 'package:test_app/shared/widget/my_loading.dart';
@@ -8,7 +8,7 @@ import 'package:test_app/shared/widget/my_loading.dart';
 import 'movie_widget.dart';
 
 class MoviePage extends ConsumerStatefulWidget {
-  final HomeEntity entity;
+  final MoviePageState entity;
   final Future Function() onReload;
   final Future Function() onNewPage;
   final String? noDataText;
@@ -64,11 +64,21 @@ class _MoviePageState extends ConsumerState<MoviePage> {
         );
       }
       return Center(
-        child: Text(widget.noDataText ?? 'No data'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(widget.noDataText ?? 'No data'),
+            IconButton(
+              onPressed: () => widget.onReload(),
+              icon: const Icon(Icons.refresh),
+            ),
+          ],
+        ),
       );
     }
     return RefreshIndicator(
       onRefresh: widget.onReload,
+      triggerMode: RefreshIndicatorTriggerMode.anywhere,
       child: Scrollbar(
         controller: scrollController,
         child: Column(
@@ -78,6 +88,7 @@ class _MoviePageState extends ConsumerState<MoviePage> {
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: GridView.builder(
                   controller: scrollController,
+                  physics: const AlwaysScrollableScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     childAspectRatio: 2 / 3.8,
                     crossAxisCount: 2,

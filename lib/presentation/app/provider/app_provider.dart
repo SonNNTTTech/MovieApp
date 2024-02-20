@@ -1,5 +1,7 @@
+// ignore_for_file: avoid_public_notifier_properties, avoid_manual_providers_as_generated_provider_dependency
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:test_app/presentation/favorite/provider/favorite_provider.dart';
 import 'package:test_app/repository/account/account_repository.dart';
 import 'package:test_app/repository/auth/auth_repository.dart';
 import 'package:test_app/repository/shared_preferences/sp_repository.dart';
@@ -44,8 +46,13 @@ class AppNotifier extends _$AppNotifier {
       }, (right) async {
         AppGlobalData.authMode = AuthMode.user;
         AppGlobalData.userName = right.username;
+        initializeFavorite();
       });
     }
     state = state.copyWith(isLoading: false);
+  }
+
+  void initializeFavorite() {
+    ref.read(favoriteNotifierProvider.notifier).reloadPage();
   }
 }
