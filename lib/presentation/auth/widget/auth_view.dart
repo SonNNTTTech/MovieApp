@@ -6,7 +6,6 @@ import 'package:test_app/presentation/auth/provider/auth_provider.dart';
 import 'package:test_app/shared/app_enum.dart';
 import 'package:test_app/shared/widget/app_webview.dart';
 import 'package:test_app/shared/widget/auto_hide_keyboard.dart';
-import 'package:test_app/shared/widget/dialog_wrapper.dart';
 import 'package:test_app/shared/widget/my_text_field.dart';
 
 import '../../../shared/widget/loading_overlay.dart';
@@ -48,24 +47,6 @@ class AuthView extends HookConsumerWidget {
     );
   }
 
-  Widget _buildLoginAsGuest(
-      AuthMode authMode, BuildContext context, WidgetRef ref) {
-    return ElevatedButton(
-      onPressed: () {
-        if (authMode == AuthMode.guest) {
-          showDialog(
-              context: context,
-              barrierDismissible: true,
-              builder: (_) =>
-                  const DialogWrapper(child: Text('You are guset already!')));
-          return;
-        }
-        ref.read(authNotifierProvider.notifier).enterGuestMode();
-      },
-      child: const Text('Use guest mode'),
-    );
-  }
-
   Widget _buildForNotLoggedIn(
       AuthMode authMode,
       BuildContext context,
@@ -75,75 +56,70 @@ class AuthView extends HookConsumerWidget {
     return AutoHideKeyboard(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12),
-        child: Column(
-          children: [
-            const SizedBox(height: 12),
-            const Text(
-              'Use TMDB account to login',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(height: 12),
+              const Text(
+                'Use TMDB account to login',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
-            ),
-            const SizedBox(height: 12),
-            MyTextField(
-              controller: userNameController,
-              hintText: 'User name',
-            ),
-            const SizedBox(height: 12),
-            MyTextField(
-              controller: passwordController,
-              hintText: 'Password',
-            ),
-            const SizedBox(height: 12),
-            _buildError(ref),
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _buildLoginAsGuest(authMode, context, ref),
-                ElevatedButton(
-                  onPressed: () {
-                    ref.read(authNotifierProvider.notifier).login(
-                        userNameController.text, passwordController.text);
-                  },
-                  child: const Text('LOGIN'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const AppWebView(
-                              url:
-                                  'https://www.themoviedb.org/reset-password')),
-                    );
-                  },
-                  child: const Text(
-                    'Forgot account? Click here!',
-                    style: TextStyle(decoration: TextDecoration.underline),
+              const SizedBox(height: 12),
+              MyTextField(
+                controller: userNameController,
+                hintText: 'User name',
+              ),
+              const SizedBox(height: 12),
+              MyTextField(
+                controller: passwordController,
+                hintText: 'Password',
+              ),
+              const SizedBox(height: 12),
+              _buildError(ref),
+              const SizedBox(height: 12),
+              ElevatedButton(
+                onPressed: () => ref
+                    .read(authNotifierProvider.notifier)
+                    .login(userNameController.text, passwordController.text),
+                child: const Text('LOGIN'),
+              ),
+              const SizedBox(height: 12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AppWebView(
+                                url:
+                                    'https://www.themoviedb.org/reset-password')),
+                      );
+                    },
+                    child: const Text(
+                      'Forgot account? Click here!',
+                      style: TextStyle(decoration: TextDecoration.underline),
+                    ),
                   ),
-                ),
-                OutlinedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const AppWebView(
-                              url: 'https://www.themoviedb.org/signup')),
-                    );
-                  },
-                  child: const Text('REGISTER'),
-                ),
-              ],
-            ),
-          ],
+                  OutlinedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AppWebView(
+                                url: 'https://www.themoviedb.org/signup')),
+                      );
+                    },
+                    child: const Text('REGISTER'),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -166,7 +142,7 @@ class AuthView extends HookConsumerWidget {
     return Center(
       child: Column(children: [
         Text(
-          'WelCome, $userName',
+          'Welcome back, $userName!',
           style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 16,

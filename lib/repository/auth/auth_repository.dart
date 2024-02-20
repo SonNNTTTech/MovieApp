@@ -82,20 +82,6 @@ class AuthRepository {
     });
   }
 
-  Future<Either<String, UserResponse>> getUser() async {
-    final spRepo = _ref.read(spRepoProvider);
-    final queryParameters = <String, dynamic>{};
-    queryParameters['session_id'] = await spRepo.getSessionId();
-    final response = await _api.get('$headUrl/account', query: queryParameters);
-    return await response.when(success: (json) async {
-      final user = UserResponse.fromJson(json);
-      await spRepo.setAccountId(user.id ?? -1);
-      return Right(user);
-    }, error: (error) {
-      return Left(error);
-    });
-  }
-
   Future<Either<String, bool>> deleteSession() async {
     final spRepo = _ref.read(spRepoProvider);
     final body = {'session_id': await spRepo.getSessionId()};

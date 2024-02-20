@@ -1,4 +1,5 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:test_app/repository/account/account_repository.dart';
 import 'package:test_app/shared/app_enum.dart';
 import 'package:test_app/shared/app_global_data.dart';
 
@@ -10,9 +11,13 @@ part 'auth_provider.g.dart';
 @riverpod
 class AuthNotifier extends _$AuthNotifier {
   late final authRepo = ref.read(authRepoProvider);
+  late final accountRepo = ref.read(accountRepoProvider);
   @override
   AuthState build() {
-    return AuthState(isLoading: false, authMode: AppGlobalData.authMode);
+    return AuthState(
+        isLoading: false,
+        authMode: AppGlobalData.authMode,
+        userName: AppGlobalData.userName);
   }
 
   Future login(String userName, String password) async {
@@ -38,7 +43,7 @@ class AuthNotifier extends _$AuthNotifier {
         createSessionResult.fold(
             (left) => state = state.copyWith(error: left, isLoading: false),
             (right) async {
-          final getUserResult = await authRepo.getUser();
+          final getUserResult = await accountRepo.getUser();
           getUserResult.fold(
               (left) => state = state.copyWith(error: left, isLoading: false),
               (right) {
