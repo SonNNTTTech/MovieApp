@@ -10,5 +10,6 @@ class MovieDetailState with _$MovieDetailState {
     List<String>? images,
     String? error,
     bool? isLoading,
+    required bool isFavorited,
   }) = _MovieDetailState;
 }

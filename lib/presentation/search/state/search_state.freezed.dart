@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$SearchState {
   String? get keyword => throw _privateConstructorUsedError;
-  HomeEntity get entity => throw _privateConstructorUsedError;
+  MoviePageState get entity => throw _privateConstructorUsedError;
   TextEditingController get controller => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -32,9 +32,11 @@ abstract class $SearchStateCopyWith<$Res> {
       _$SearchStateCopyWithImpl<$Res, SearchState>;
   @useResult
   $Res call(
-      {String? keyword, HomeEntity entity, TextEditingController controller});
+      {String? keyword,
+      MoviePageState entity,
+      TextEditingController controller});
 
-  $HomeEntityCopyWith<$Res> get entity;
+  $MoviePageStateCopyWith<$Res> get entity;
 }
 
 /// @nodoc
@@ -62,7 +64,7 @@ class _$SearchStateCopyWithImpl<$Res, $Val extends SearchState>
       entity: null == entity
           ? _value.entity
           : entity // ignore: cast_nullable_to_non_nullable
-              as HomeEntity,
+              as MoviePageState,
       controller: null == controller
           ? _value.controller
           : controller // ignore: cast_nullable_to_non_nullable
@@ -72,8 +74,8 @@ class _$SearchStateCopyWithImpl<$Res, $Val extends SearchState>
 
   @override
   @pragma('vm:prefer-inline')
-  $HomeEntityCopyWith<$Res> get entity {
-    return $HomeEntityCopyWith<$Res>(_value.entity, (value) {
+  $MoviePageStateCopyWith<$Res> get entity {
+    return $MoviePageStateCopyWith<$Res>(_value.entity, (value) {
       return _then(_value.copyWith(entity: value) as $Val);
     });
   }
@@ -88,10 +90,12 @@ abstract class _$$SearchStateImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String? keyword, HomeEntity entity, TextEditingController controller});
+      {String? keyword,
+      MoviePageState entity,
+      TextEditingController controller});
 
   @override
-  $HomeEntityCopyWith<$Res> get entity;
+  $MoviePageStateCopyWith<$Res> get entity;
 }
 
 /// @nodoc
@@ -117,7 +121,7 @@ class __$$SearchStateImplCopyWithImpl<$Res>
       entity: null == entity
           ? _value.entity
           : entity // ignore: cast_nullable_to_non_nullable
-              as HomeEntity,
+              as MoviePageState,
       controller: null == controller
           ? _value.controller
           : controller // ignore: cast_nullable_to_non_nullable
@@ -135,7 +139,7 @@ class _$SearchStateImpl implements _SearchState {
   @override
   final String? keyword;
   @override
-  final HomeEntity entity;
+  final MoviePageState entity;
   @override
   final TextEditingController controller;
 
@@ -168,13 +172,13 @@ class _$SearchStateImpl implements _SearchState {
 abstract class _SearchState implements SearchState {
   const factory _SearchState(
       {final String? keyword,
-      required final HomeEntity entity,
+      required final MoviePageState entity,
       required final TextEditingController controller}) = _$SearchStateImpl;
 
   @override
   String? get keyword;
   @override
-  HomeEntity get entity;
+  MoviePageState get entity;
   @override
   TextEditingController get controller;
   @override

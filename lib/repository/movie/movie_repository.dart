@@ -4,6 +4,7 @@ import 'package:test_app/datasource/api_provider.dart';
 import 'package:test_app/presentation/movie_detail/entity/movie_detail_entity.dart';
 import 'package:test_app/repository/movie/image_model.dart';
 import 'package:test_app/repository/movie/movie_model.dart';
+import 'package:test_app/repository/shared_preferences/sp_repository.dart';
 import 'package:test_app/shared/app_enum.dart';
 
 import '../../presentation/home/entity/movie_entity.dart';
@@ -223,5 +224,23 @@ class MovieRepository {
         return Left(error);
       },
     );
+  }
+
+  Future<Either<String, List<MovieEntity>>> getFavoriteMovie({
+    int? page,
+  }) async {
+    final spRepo = _ref.read(spRepoProvider);
+    final queryParameters = <String, dynamic>{};
+    if (page != null) {
+      queryParameters['page'] = page;
+    }
+    queryParameters['session_id'] = await spRepo.getSessionId();
+    final response = await _api.get('/account/20938939/favorite/movies',
+        query: queryParameters);
+    return response.when(success: (json) {
+      return Right(toListMovieEntity(MovieResponse.fromJson(json)));
+    }, error: (error) {
+      return Left(error);
+    });
   }
 }

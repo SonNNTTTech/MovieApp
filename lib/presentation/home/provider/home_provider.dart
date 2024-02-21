@@ -1,6 +1,7 @@
+// ignore_for_file: avoid_public_notifier_properties, avoid_manual_providers_as_generated_provider_dependency
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:test_app/presentation/home/state/home_state.dart';
-import 'package:test_app/presentation/home/entity/home_entity.dart';
+import 'package:test_app/presentation/home/entity/movie_page_state.dart';
 import 'package:test_app/repository/movie/movie_repository.dart';
 import 'package:test_app/shared/app_enum.dart';
 
@@ -17,12 +18,12 @@ class HomeNotifier extends _$HomeNotifier {
   HomeState build() {
     const initialTab = MovieType.popular;
     return HomeState(mapState: {
-      for (final key in MovieType.values) key: const HomeEntity(movies: [])
+      for (final key in MovieType.values) key: const MoviePageState(movies: [])
     }, tab: initialTab);
   }
 
   Future reloadPage(MovieType type) async {
-    Map<MovieType, HomeEntity> data = Map.from(state.mapState);
+    Map<MovieType, MoviePageState> data = Map.from(state.mapState);
     final result = await movieRepo.callMovieByType(type);
     result.fold((left) => null, (list) {
       data[type] = data[type]!
@@ -32,10 +33,10 @@ class HomeNotifier extends _$HomeNotifier {
   }
 
   Future getNewPage(MovieType type) async {
-    Map<MovieType, HomeEntity> data = Map.from(state.mapState);
+    Map<MovieType, MoviePageState> data = Map.from(state.mapState);
     data[type] = data[type]!.copyWith(isNewPageLoading: true);
     state = state.copyWith(mapState: data);
-    Map<MovieType, HomeEntity> data2 = Map.from(state.mapState);
+    Map<MovieType, MoviePageState> data2 = Map.from(state.mapState);
     final result = await movieRepo.callMovieByType(type,
         page: 1 + ((data2[type]?.movies.length ?? 0) / 20).floor());
     result.fold((left) => null, (list) {

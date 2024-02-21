@@ -1,9 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+// ignore_for_file: avoid_public_notifier_properties, avoid_manual_providers_as_generated_provider_dependency
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:test_app/presentation/bottom_bar/widget/app_route.dart';
-import 'package:test_app/presentation/home/entity/home_entity.dart';
+import 'package:test_app/presentation/home/entity/movie_page_state.dart';
 import 'package:test_app/presentation/search/search_movie_view.dart';
 import 'package:test_app/repository/movie/movie_repository.dart';
 
@@ -20,7 +21,7 @@ class SearchNotifier extends _$SearchNotifier {
   SearchState build() {
     const keyword = 'Marvel';
     return SearchState(
-        entity: const HomeEntity(movies: []),
+        entity: const MoviePageState(movies: []),
         keyword: keyword,
         controller: TextEditingController(text: keyword));
   }

@@ -28,4 +28,22 @@ class AccountRepository {
       return Left(error);
     });
   }
+
+  Future<Either<String, bool>> favoriteMovie(
+      int movieId, bool isFavorite) async {
+    final spRepo = _ref.read(spRepoProvider);
+    final queryParameters = <String, dynamic>{};
+    queryParameters['session_id'] = await spRepo.getSessionId();
+    final body = <String, dynamic>{};
+    body['media_type'] = 'movie';
+    body['media_id'] = movieId;
+    body['favorite'] = isFavorite;
+    final response = await _api.post('$headUrl/20938939/favorite', body,
+        query: queryParameters);
+    return response.when(success: (json) {
+      return const Right(true);
+    }, error: (error) {
+      return Left(error);
+    });
+  }
 }

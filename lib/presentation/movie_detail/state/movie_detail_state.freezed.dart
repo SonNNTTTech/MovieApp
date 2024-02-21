@@ -20,6 +20,7 @@ mixin _$MovieDetailState {
   List<String>? get images => throw _privateConstructorUsedError;
   String? get error => throw _privateConstructorUsedError;
   bool? get isLoading => throw _privateConstructorUsedError;
+  bool get isFavorited => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $MovieDetailStateCopyWith<MovieDetailState> get copyWith =>
@@ -36,7 +37,8 @@ abstract class $MovieDetailStateCopyWith<$Res> {
       {MovieDetailEntity? entity,
       List<String>? images,
       String? error,
-      bool? isLoading});
+      bool? isLoading,
+      bool isFavorited});
 }
 
 /// @nodoc
@@ -56,6 +58,7 @@ class _$MovieDetailStateCopyWithImpl<$Res, $Val extends MovieDetailState>
     Object? images = freezed,
     Object? error = freezed,
     Object? isLoading = freezed,
+    Object? isFavorited = null,
   }) {
     return _then(_value.copyWith(
       entity: freezed == entity
@@ -74,6 +77,10 @@ class _$MovieDetailStateCopyWithImpl<$Res, $Val extends MovieDetailState>
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool?,
+      isFavorited: null == isFavorited
+          ? _value.isFavorited
+          : isFavorited // ignore: cast_nullable_to_non_nullable
+              as bool,
     ) as $Val);
   }
 }
@@ -90,7 +97,8 @@ abstract class _$$MovieDetailStateImplCopyWith<$Res>
       {MovieDetailEntity? entity,
       List<String>? images,
       String? error,
-      bool? isLoading});
+      bool? isLoading,
+      bool isFavorited});
 }
 
 /// @nodoc
@@ -108,6 +116,7 @@ class __$$MovieDetailStateImplCopyWithImpl<$Res>
     Object? images = freezed,
     Object? error = freezed,
     Object? isLoading = freezed,
+    Object? isFavorited = null,
   }) {
     return _then(_$MovieDetailStateImpl(
       entity: freezed == entity
@@ -126,6 +135,10 @@ class __$$MovieDetailStateImplCopyWithImpl<$Res>
           ? _value.isLoading
           : isLoading // ignore: cast_nullable_to_non_nullable
               as bool?,
+      isFavorited: null == isFavorited
+          ? _value.isFavorited
+          : isFavorited // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -134,7 +147,11 @@ class __$$MovieDetailStateImplCopyWithImpl<$Res>
 
 class _$MovieDetailStateImpl implements _MovieDetailState {
   const _$MovieDetailStateImpl(
-      {this.entity, final List<String>? images, this.error, this.isLoading})
+      {this.entity,
+      final List<String>? images,
+      this.error,
+      this.isLoading,
+      required this.isFavorited})
       : _images = images;
 
   @override
@@ -153,10 +170,12 @@ class _$MovieDetailStateImpl implements _MovieDetailState {
   final String? error;
   @override
   final bool? isLoading;
+  @override
+  final bool isFavorited;
 
   @override
   String toString() {
-    return 'MovieDetailState(entity: $entity, images: $images, error: $error, isLoading: $isLoading)';
+    return 'MovieDetailState(entity: $entity, images: $images, error: $error, isLoading: $isLoading, isFavorited: $isFavorited)';
   }
 
   @override
@@ -168,12 +187,19 @@ class _$MovieDetailStateImpl implements _MovieDetailState {
             const DeepCollectionEquality().equals(other._images, _images) &&
             (identical(other.error, error) || other.error == error) &&
             (identical(other.isLoading, isLoading) ||
-                other.isLoading == isLoading));
+                other.isLoading == isLoading) &&
+            (identical(other.isFavorited, isFavorited) ||
+                other.isFavorited == isFavorited));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, entity,
-      const DeepCollectionEquality().hash(_images), error, isLoading);
+  int get hashCode => Object.hash(
+      runtimeType,
+      entity,
+      const DeepCollectionEquality().hash(_images),
+      error,
+      isLoading,
+      isFavorited);
 
   @JsonKey(ignore: true)
   @override
@@ -188,7 +214,8 @@ abstract class _MovieDetailState implements MovieDetailState {
       {final MovieDetailEntity? entity,
       final List<String>? images,
       final String? error,
-      final bool? isLoading}) = _$MovieDetailStateImpl;
+      final bool? isLoading,
+      required final bool isFavorited}) = _$MovieDetailStateImpl;
 
   @override
   MovieDetailEntity? get entity;
@@ -198,6 +225,8 @@ abstract class _MovieDetailState implements MovieDetailState {
   String? get error;
   @override
   bool? get isLoading;
+  @override
+  bool get isFavorited;
   @override
   @JsonKey(ignore: true)
   _$$MovieDetailStateImplCopyWith<_$MovieDetailStateImpl> get copyWith =>

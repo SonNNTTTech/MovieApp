@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:test_app/presentation/favorite/favorite_view.dart';
 import 'package:test_app/presentation/home/widget/home_view.dart';
 import 'package:test_app/presentation/movie_detail/widget/movie_detail_view.dart';
 import 'package:test_app/presentation/search/search_movie_view.dart';
@@ -27,6 +28,13 @@ class AppRoutes {
       return MaterialPageRoute(
         builder: (context) {
           return MovieDetailView(id: args);
+        },
+      );
+    }
+    if (settings.name == FavoriteView.route) {
+      return MaterialPageRoute(
+        builder: (context) {
+          return const FavoriteView();
         },
       );
     }

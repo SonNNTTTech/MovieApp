@@ -16,7 +16,8 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$HomeState {
-  Map<MovieType, HomeEntity> get mapState => throw _privateConstructorUsedError;
+  Map<MovieType, MoviePageState> get mapState =>
+      throw _privateConstructorUsedError;
   MovieType get tab => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -29,7 +30,7 @@ abstract class $HomeStateCopyWith<$Res> {
   factory $HomeStateCopyWith(HomeState value, $Res Function(HomeState) then) =
       _$HomeStateCopyWithImpl<$Res, HomeState>;
   @useResult
-  $Res call({Map<MovieType, HomeEntity> mapState, MovieType tab});
+  $Res call({Map<MovieType, MoviePageState> mapState, MovieType tab});
 }
 
 /// @nodoc
@@ -52,7 +53,7 @@ class _$HomeStateCopyWithImpl<$Res, $Val extends HomeState>
       mapState: null == mapState
           ? _value.mapState
           : mapState // ignore: cast_nullable_to_non_nullable
-              as Map<MovieType, HomeEntity>,
+              as Map<MovieType, MoviePageState>,
       tab: null == tab
           ? _value.tab
           : tab // ignore: cast_nullable_to_non_nullable
@@ -69,7 +70,7 @@ abstract class _$$HomeStateImplCopyWith<$Res>
       __$$HomeStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({Map<MovieType, HomeEntity> mapState, MovieType tab});
+  $Res call({Map<MovieType, MoviePageState> mapState, MovieType tab});
 }
 
 /// @nodoc
@@ -90,7 +91,7 @@ class __$$HomeStateImplCopyWithImpl<$Res>
       mapState: null == mapState
           ? _value.mapState
           : mapState // ignore: cast_nullable_to_non_nullable
-              as Map<MovieType, HomeEntity>,
+              as Map<MovieType, MoviePageState>,
       tab: null == tab
           ? _value.tab
           : tab // ignore: cast_nullable_to_non_nullable
@@ -105,7 +106,7 @@ class _$HomeStateImpl implements _HomeState {
   const _$HomeStateImpl({required this.mapState, required this.tab});
 
   @override
-  final Map<MovieType, HomeEntity> mapState;
+  final Map<MovieType, MoviePageState> mapState;
   @override
   final MovieType tab;
 
@@ -136,11 +137,11 @@ class _$HomeStateImpl implements _HomeState {
 
 abstract class _HomeState implements HomeState {
   const factory _HomeState(
-      {required final Map<MovieType, HomeEntity> mapState,
+      {required final Map<MovieType, MoviePageState> mapState,
       required final MovieType tab}) = _$HomeStateImpl;
 
   @override
-  Map<MovieType, HomeEntity> get mapState;
+  Map<MovieType, MoviePageState> get mapState;
   @override
   MovieType get tab;
   @override
